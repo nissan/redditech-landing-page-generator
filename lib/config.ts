@@ -93,6 +93,29 @@ export interface LandingPageConfig {
   email?: {
     provider: string;
   };
+  hookStoryOffer?: {
+    enabled: boolean;
+    hook?: {
+      text: string;
+    };
+    story?: {
+      text: string;
+    };
+    offer?: {
+      heading: string;
+      features: string[];
+      pricing?: {
+        originalPrice?: string;
+        discountedPrice?: string;
+        urgencyText?: string;
+      };
+      cta: {
+        text: string;
+        url?: string;
+      };
+      guarantee?: string;
+    };
+  };
 }
 
 export function loadConfig(configPath = 'content/landing.yaml'): LandingPageConfig {

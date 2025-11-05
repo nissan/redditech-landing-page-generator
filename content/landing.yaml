@@ -81,3 +81,25 @@ analytics:
   plausible: ''
 email:
   provider: custom
+hookStoryOffer:
+  enabled: false
+  # Generate this section using the CLI: pnpm configure → "Generate Hook-Story-Offer (AI)"
+  # Requires OpenAI API key to be configured
+  # hook:
+  #   text: Your compelling hook goes here...
+  # story:
+  #   text: Your transformation story goes here...
+  # offer:
+  #   heading: Here's What I Want to Give You
+  #   features:
+  #     - Feature or benefit 1
+  #     - Feature or benefit 2
+  #     - Feature or benefit 3
+  #   pricing:
+  #     originalPrice: $99
+  #     discountedPrice: $49
+  #     urgencyText: Limited Time Only
+  #   cta:
+  #     text: Get Started Now
+  #     url: /subscribe
+  #   guarantee: 30-day money-back guarantee

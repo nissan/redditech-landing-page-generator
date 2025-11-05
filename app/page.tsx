@@ -3,6 +3,7 @@ import { HeroSection } from "@/components/hero-section";
 import { CTASection } from "@/components/cta-section";
 import { FeaturesSection } from "@/components/features-section";
 import { TestimonialsSection } from "@/components/testimonials-section";
+import { HookStoryOfferSection } from "@/components/hook-story-offer-section";
 import { Footer } from "@/components/footer";
 import { ThemeToggle } from "@/components/theme-toggle";
 import type { Metadata } from "next";
@@ -35,6 +36,10 @@ export default function LandingPage() {
 
       {config.testimonials?.enabled && (
         <TestimonialsSection config={config.testimonials} theme={config.theme} />
+      )}
+
+      {config.hookStoryOffer?.enabled && (
+        <HookStoryOfferSection config={config.hookStoryOffer} theme={config.theme} />
       )}
 
       <Footer config={config.footer} theme={config.theme} />
