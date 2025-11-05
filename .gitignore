@@ -38,3 +38,35 @@ next-env.d.ts
 
 # pnpm
 pnpm-lock.yaml
+
+# CLI settings
+cli/.settings
+
+# macOS
+.DS_Store
+.AppleDouble
+.LSOverride
+
+# Editor directories and files
+.vscode/*
+!.vscode/extensions.json
+.idea
+*.swp
+*.swo
+*~
+
+# Build artifacts
+cli/dist/
+*.tsbuildinfo
+
+# Logs
+*.log
+logs/
+
+# Temporary files
+.tmp/
+temp/
+
+# GitHub-specific files to keep locally
+PUSH_TO_GITHUB.txt
+TWITTER_ANNOUNCEMENT.md

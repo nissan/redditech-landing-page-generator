@@ -1,364 +1,347 @@
-# 🚀 Landing Page Template
+# 🚀 Redditech Landing Page Generator
 
-[![CI](https://github.com/yourusername/landing-page-template/workflows/CI/badge.svg)](https://github.com/yourusername/landing-page-template/actions)
-[![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](https://opensource.org/licenses/MIT)
-[![TypeScript](https://img.shields.io/badge/TypeScript-5.9-blue)](https://www.typescriptlang.org/)
-[![Next.js](https://img.shields.io/badge/Next.js-16.0-black)](https://nextjs.org/)
+[![License](https://img.shields.io/badge/License-Apache%202.0-blue.svg)](https://opensource.org/licenses/Apache-2.0)
+[![Node](https://img.shields.io/badge/node-%3E%3D18-brightgreen.svg)](https://nodejs.org/)
+[![pnpm](https://img.shields.io/badge/pnpm-10.18.3-orange.svg)](https://pnpm.io/)
+[![Next.js](https://img.shields.io/badge/Next.js-16.0.1-black.svg)](https://nextjs.org/)
+[![TypeScript](https://img.shields.io/badge/TypeScript-5.9.3-blue.svg)](https://www.typescriptlang.org/)
 
-A modern, reusable Next.js landing page template with **YAML-driven content**, **dark mode**, beautiful animations, and an **interactive CLI configurator with AI-powered copywriting**.
+**The modern landing page generator with AI-powered copywriting built right in.** Create beautiful, production-ready landing pages in minutes, not hours.
 
-<div align="center">
-  <img src="https://via.placeholder.com/800x400/1677be/ffffff?text=Landing+Page+Template" alt="Landing Page Preview" />
-</div>
+## ✨ Why Redditech?
 
-## ✨ Features
-
-### 🎨 Interactive CLI Configurator
-- **Beautiful Interface**: Colorful gradient ASCII art with intuitive menus
-- **AI-Powered Copywriting**: Generate compelling headlines and CTAs with OpenAI GPT-4o-mini
-- **Live Preview**: One-click dev server with hot reload
-- **Guided Wizards**: Step-by-step configuration for all sections
-- **No Code Required**: Configure everything through interactive prompts
-
-### 🌐 Landing Page
-- **YAML-Driven**: All content in a single configuration file
-- **Dark Mode**: Automatic theme switching with system preference
-- **Modern Stack**: Next.js 15, React 19, TypeScript, Tailwind CSS v4
-- **Responsive**: Mobile-first design with beautiful animations
-- **Email Capture**: Built-in form with API endpoint
-- **Type-Safe**: Full TypeScript support
+- **🤖 AI-Powered CLI**: Built-in GPT-4o-mini copywriting assistant helps you craft compelling headlines and copy
+- **⚡ 5-Minute Setup**: From zero to deployed landing page in under 5 minutes
+- **🎨 Modern Tech Stack**: Built on Next.js 16, React 19, and Tailwind CSS v4
+- **🏗️ Production-Ready**: Fully typed with TypeScript, validated inputs, and comprehensive error handling
+- **📝 YAML-Driven**: Edit your content without touching code
+- **🎭 Beautiful CLI**: Interactive terminal interface with gradient text, animations, and real-time previews
+- **🌙 Dark Mode**: Built-in theme toggle with system detection
+- **📱 Responsive**: Looks perfect on all devices
+- **🔧 No Database Required**: Static generation with optional API routes
+- **☁️ Deploy Anywhere**: Vercel, Netlify, Cloudflare Pages, or any static host
 
 ## 🎬 Quick Demo
 
+Run the included demo to see what's possible:
+
 ```bash
-# Install dependencies
+# Clone and install
+git clone https://github.com/yourusername/redditech-landing-page-generator.git
+cd redditech-landing-page-generator
 pnpm install
 
-# Launch interactive configurator
-pnpm configure
-
-# Start development server
+# See it in action
 pnpm dev
 ```
 
-**See your landing page at** `http://localhost:3000` 🎉
+Visit [http://localhost:3000](http://localhost:3000) to see the demo landing page.
 
-## 📦 What's Included
+For more demo options, check out the [`demo/`](demo/) folder.
 
-```
-landing-page-template/
-├── cli/                    # Interactive CLI configurator
-├── app/                    # Next.js pages and API
-├── components/             # React components
-├── content/
-│   └── landing.yaml        # Your configuration (edit this!)
-├── lib/                    # Utilities
-└── Documentation/          # 9 comprehensive guides
-```
-
-## 🚀 Getting Started
+## 🚀 Quick Start
 
 ### Prerequisites
 
-- **Node.js** 18+ ([Download](https://nodejs.org/))
-- **pnpm** ([Install](https://pnpm.io/installation))
+- Node.js 18 or higher
+- pnpm (install via `npm install -g pnpm`)
 
 ### Installation
 
-1. **Clone or fork this repository**
-
 ```bash
-git clone https://github.com/yourusername/landing-page-template.git
-cd landing-page-template
-```
+# 1. Clone the repository
+git clone https://github.com/yourusername/redditech-landing-page-generator.git
+cd redditech-landing-page-generator
 
-2. **Install dependencies**
-
-```bash
+# 2. Install dependencies
 pnpm install
+
+# 3. Start the interactive configurator
+pnpm configure
+
+# 4. Launch preview
+pnpm dev
 ```
 
-3. **Choose your configuration method**
+That's it! Your landing page is now running at [http://localhost:3000](http://localhost:3000).
 
-#### Option A: Interactive CLI (Recommended) 🎨
+## 🎯 Features
+
+### Interactive CLI Configurator
+
+The heart of this project is the beautiful CLI that makes configuration effortless:
+
+- **Visual Wizard**: Step-by-step prompts guide you through every option
+- **AI Copywriting**: Get help writing headlines, descriptions, and CTAs
+- **Live Preview**: Launch a dev server directly from the CLI
+- **Color Validation**: Hex color picker with real-time validation
+- **Settings Management**: Store your OpenAI API key securely
+- **YAML Export**: All changes saved to `content/landing.yaml`
 
 ```bash
 pnpm configure
 ```
 
-Navigate through the beautiful, colorful menu to:
-- Configure all content
-- Use AI to write compelling copy
-- Preview changes live
-- Manage settings
+### Landing Page Components
 
-#### Option B: Manual YAML Editing
+- **Hero Section**: Eye-catching headline with image and animations
+- **Features Grid**: Icon-based feature cards with descriptions
+- **Testimonials**: Customer quotes with avatars (optional)
+- **CTA Section**: Email capture form or direct link
+- **Footer**: Copyright, links, and social media icons
+- **Theme Toggle**: Light/dark mode with smooth transitions
 
-1. Edit `content/landing.yaml` with your content
-2. Replace `public/guidebook-cover.png` with your image
-3. Run `pnpm dev`
+### Built-in Animations
 
-### Your First Landing Page (5 Minutes)
+Choose from multiple animation presets:
+- `scale`: Zoom effect on hover
+- `fade`: Smooth fade-in transitions
+- `slide`: Slide animations from any direction
 
-1. **Run the configurator**
-   ```bash
-   pnpm configure
-   ```
+### Email Integration Ready
 
-2. **Select "Configure landing page"** and answer the prompts:
-   - Page title and description
-   - Brand colors
-   - Hero headline and subheadline
-   - Call-to-action details
-   - Optional sections
-
-3. **Preview your site**
-   - Select "Preview site" from the menu
-   - Or run `pnpm dev` in a new terminal
-
-4. **Done!** Your landing page is ready at `http://localhost:3000`
-
-## 🤖 AI-Powered Copywriting
-
-The CLI includes AI copywriting using OpenAI GPT-4o-mini.
-
-### Setup (Optional)
-
-1. Get an API key from [platform.openai.com](https://platform.openai.com)
-2. Run `pnpm configure`
-3. Select "Settings" → "OpenAI API key"
-4. Enter your API key
-
-**Cost**: ~$0.0001-0.0002 per rewrite (very affordable!)
-
-### Usage
-
-1. Select "AI-powered copywriting"
-2. Choose section (headline, CTA, etc.)
-3. Enter your draft
-4. Select tone and keywords
-5. Get 3 AI-generated variations
-6. Choose and save your favorite!
-
-## 📝 Configuration
-
-All content lives in `content/landing.yaml`:
-
-```yaml
-metadata:
-  title: "Your Page Title"
-  description: "Your description"
-
-theme:
-  primaryColor: "#1677be"
-  accentColor: "#0f5a8a"
-
-hero:
-  headline: "Your Compelling Headline"
-  subheadline: "Your value proposition"
-  image:
-    src: "/your-image.png"
-  animation:
-    type: "scale"  # scale, fade, or slide
-
-cta:
-  heading: "Get Started"
-  description: "Why they should act now"
-  form:
-    enabled: true
-    button:
-      text: "Sign Up Free"
-
-features:
-  enabled: true  # Toggle on/off
-
-testimonials:
-  enabled: false  # Toggle on/off
-```
-
-See [`content/landing-example-full.yaml`](content/landing-example-full.yaml) for all options.
-
-## 🎨 Customization
-
-### Colors
-
-Update in `content/landing.yaml`:
-
-```yaml
-theme:
-  primaryColor: "#your-color"
-  accentColor: "#your-accent"
-```
-
-### Content Sections
-
-Toggle features and testimonials:
-
-```yaml
-features:
-  enabled: true  # Show features section
-
-testimonials:
-  enabled: true  # Show testimonials section
-```
-
-### Images
-
-1. Add images to `public/` directory
-2. Reference in YAML: `src: "/my-image.png"`
-
-### Email Integration
-
-Integrate your email service in `app/api/subscribe/route.ts`:
-
+Pre-wired API endpoint (`/app/api/subscribe/route.ts`) ready for:
 - Mailchimp
 - ConvertKit
 - SendGrid
-- Custom database
+- Custom email services
 
-Examples provided in the file.
+## 📖 Configuration
 
-## 🚢 Deployment
-
-### Vercel (Recommended)
-
-[![Deploy with Vercel](https://vercel.com/button)](https://vercel.com/new/clone?repository-url=https://github.com/yourusername/landing-page-template)
-
-1. Push to GitHub
-2. Import in Vercel
-3. Deploy (automatic)
-4. Done in < 2 minutes
-
-### Other Platforms
+### Option 1: Interactive CLI (Recommended)
 
 ```bash
+pnpm configure
+```
+
+Follow the interactive prompts to configure:
+- Metadata (title, description, favicon)
+- Theme colors (primary, accent, background, text)
+- Hero section (headline, subheadline, image)
+- Features section (toggle on/off, add features)
+- Testimonials (toggle on/off, add quotes)
+- CTA section (form or link)
+- Footer (copyright, links, social media)
+- Analytics (Google Analytics, Plausible)
+
+### Option 2: Edit YAML Directly
+
+Edit `content/landing.yaml`:
+
+```yaml
+metadata:
+  title: Your Landing Page
+  description: Your description
+
+theme:
+  primaryColor: '#1677be'
+  accentColor: '#0f5a8a'
+
+hero:
+  headline: Your Compelling Headline
+  subheadline: Your supporting text
+
+# ... see content/landing-example-full.yaml for all options
+```
+
+### AI Copywriting Setup (Optional)
+
+To use the AI copywriting feature:
+
+1. Get an API key from [OpenAI Platform](https://platform.openai.com/)
+2. Run `pnpm configure` → Select "Settings" → Enter your API key
+3. Use the AI assistant when writing copy (costs ~$0.0001-0.0002 per rewrite)
+
+## 🏗️ Project Structure
+
+```
+redditech-landing-page-generator/
+├── app/                   # Next.js App Router
+├── cli/                   # Interactive CLI tool
+├── components/            # React components
+├── content/               # YAML configuration
+├── lib/                   # Utilities
+├── public/                # Static assets
+├── Documentation/         # Comprehensive guides
+└── demo/                  # Demo configurations
+```
+
+For detailed architecture, see [PROJECT_STRUCTURE.md](Documentation/PROJECT_STRUCTURE.md).
+
+## 🎨 Tech Stack
+
+| Category | Technology |
+|----------|-----------|
+| **Framework** | Next.js 16.0.1 with App Router |
+| **UI Library** | React 19.2.0 |
+| **Styling** | Tailwind CSS v4.1.16 |
+| **Animations** | Framer Motion 12.23.24 |
+| **Language** | TypeScript 5.9.3 |
+| **CLI Tools** | Inquirer, Chalk, Figlet, Boxen |
+| **AI Integration** | OpenAI API 6.8.1 |
+| **Theme** | next-themes 0.4.6 |
+| **Icons** | Lucide React 0.552.0 |
+| **Package Manager** | pnpm 10.18.3 |
+
+## 📦 Deployment to Vercel
+
+Vercel is the recommended platform for deploying your landing page (it's made by the Next.js team).
+
+### Method 1: GitHub Integration (Easiest)
+
+1. **Push your code to GitHub**:
+   ```bash
+   git add .
+   git commit -m "Configure landing page"
+   git push origin main
+   ```
+
+2. **Connect to Vercel**:
+   - Go to [vercel.com](https://vercel.com)
+   - Click "Add New Project"
+   - Import your GitHub repository
+   - Vercel will auto-detect Next.js settings
+
+3. **Add Environment Variables** (if needed):
+   - In Vercel dashboard → Settings → Environment Variables
+   - Add your `OPENAI_API_KEY`, email service credentials, etc.
+
+4. **Deploy**:
+   - Click "Deploy"
+   - Your site will be live at `your-project.vercel.app`
+
+### Method 2: Vercel CLI
+
+```bash
+# Install Vercel CLI
+npm i -g vercel
+
+# Deploy
+vercel
+
+# Follow the prompts to link your project
+# Your site will be deployed automatically
+```
+
+### Custom Domain
+
+1. Go to your project in Vercel dashboard
+2. Click "Settings" → "Domains"
+3. Add your custom domain
+4. Update DNS records as instructed
+5. SSL certificates are automatically provisioned
+
+### Environment Variables
+
+Add these in Vercel dashboard (if applicable):
+
+```bash
+# Optional - for AI copywriting
+OPENAI_API_KEY=sk-...
+
+# Optional - Email service
+MAILCHIMP_API_KEY=...
+# OR
+CONVERTKIT_API_KEY=...
+# OR
+SENDGRID_API_KEY=...
+
+# Optional - Analytics
+NEXT_PUBLIC_GA_ID=G-...
+NEXT_PUBLIC_PLAUSIBLE_DOMAIN=...
+
+# Production URL
+NEXT_PUBLIC_SITE_URL=https://yourdomain.com
+```
+
+### Deployment Checklist
+
+- [ ] Replace `public/guidebook-cover.png` with your hero image
+- [ ] Update all content in `content/landing.yaml`
+- [ ] Test email form submission
+- [ ] Add environment variables in Vercel
+- [ ] Configure custom domain (optional)
+- [ ] Enable Web Analytics in Vercel (free)
+- [ ] Test dark mode toggle
+- [ ] Run Lighthouse audit (should score 95+)
+
+## 🔧 Development Commands
+
+```bash
+# Start development server
+pnpm dev
+
 # Build for production
 pnpm build
 
 # Start production server
 pnpm start
-```
 
-Supports: Netlify, Cloudflare Pages, AWS Amplify, Railway, Render
+# Run interactive configurator
+pnpm configure
+
+# Type checking
+pnpm type-check
+
+# Linting
+pnpm lint
+
+# Build CLI TypeScript
+pnpm cli:build
+```
 
 ## 📚 Documentation
 
-Comprehensive guides included:
+Comprehensive documentation is available in the [`Documentation/`](Documentation/) folder:
 
-1. **[QUICKSTART.md](QUICKSTART.md)** - 5-minute setup
-2. **[CLI_README.md](CLI_README.md)** - CLI quick reference
-3. **[CLI_GUIDE.md](CLI_GUIDE.md)** - Complete CLI documentation
-4. **[CLI_EXAMPLES.md](CLI_EXAMPLES.md)** - Real-world usage examples
-5. **[CUSTOMIZATION_GUIDE.md](CUSTOMIZATION_GUIDE.md)** - Advanced customization
-6. **[PROJECT_STRUCTURE.md](PROJECT_STRUCTURE.md)** - Architecture details
-7. **[TEMPLATE_OVERVIEW.md](TEMPLATE_OVERVIEW.md)** - Features and use cases
-8. **[COMPLETE_SUMMARY.md](COMPLETE_SUMMARY.md)** - Full overview
-9. **[CONTRIBUTING.md](CONTRIBUTING.md)** - How to contribute
-
-## 🎯 Use Cases
-
-Perfect for:
-
-- 🚀 Product launches
-- 📧 Lead generation
-- 📚 Ebook/course downloads
-- 🎟️ Event registration
-- 💼 SaaS trials
-- 🎨 Portfolio showcases
-- 📱 App landing pages
-- 🎁 Coming soon pages
-
-## 🛠️ Tech Stack
-
-- **Framework**: [Next.js 15](https://nextjs.org/) (App Router)
-- **Language**: [TypeScript](https://www.typescriptlang.org/)
-- **Styling**: [Tailwind CSS v4](https://tailwindcss.com/)
-- **Animations**: [Framer Motion](https://www.framer.com/motion/)
-- **Theme**: [next-themes](https://github.com/pacocoursey/next-themes)
-- **Icons**: [Lucide React](https://lucide.dev/)
-- **CLI**: chalk, inquirer, figlet, boxen, ora
-- **AI**: [OpenAI API](https://platform.openai.com/)
-
-## 📊 Performance
-
-- ✅ Lighthouse Score: 95+
-- ✅ First Load: < 1s
-- ✅ Core Web Vitals: All green
-- ✅ SEO Optimized
-- ✅ Fully responsive
+- [**QUICKSTART.md**](Documentation/QUICKSTART.md) - 5-minute getting started guide
+- [**CLI_GUIDE.md**](Documentation/CLI_GUIDE.md) - Complete CLI documentation
+- [**CLI_EXAMPLES.md**](Documentation/CLI_EXAMPLES.md) - Real-world configuration examples
+- [**CUSTOMIZATION_GUIDE.md**](Documentation/CUSTOMIZATION_GUIDE.md) - Advanced customization
+- [**PROJECT_STRUCTURE.md**](Documentation/PROJECT_STRUCTURE.md) - Architecture details
+- [**TEMPLATE_OVERVIEW.md**](Documentation/TEMPLATE_OVERVIEW.md) - Features overview
+- [**CONTRIBUTING.md**](Documentation/CONTRIBUTING.md) - Contribution guidelines
 
 ## 🤝 Contributing
 
-Contributions are welcome! See [CONTRIBUTING.md](CONTRIBUTING.md) for guidelines.
+We welcome contributions! Please see [CONTRIBUTING.md](Documentation/CONTRIBUTING.md) for details.
 
-### Areas for Contribution
+### Quick Contribution Guide
 
-- Additional animation presets
-- More section templates
-- Enhanced AI prompts
-- Email service integrations
-- Multi-language support
-- Template library
+1. Fork the repository
+2. Create a feature branch (`git checkout -b feature/amazing-feature`)
+3. Make your changes
+4. Run tests: `pnpm type-check && pnpm lint`
+5. Commit with conventional commits (`feat:`, `fix:`, `docs:`)
+6. Push to your fork
+7. Open a Pull Request
 
-## 📄 License
+## 📝 License
 
-This project is licensed under the MIT License - see [LICENSE](LICENSE) file for details.
+This project is licensed under the Apache License 2.0 - see the [LICENSE](LICENSE) file for details.
 
 ## 🙏 Acknowledgments
 
-- Inspired by [Daily Dose of Data Science MCP Guidebook](https://dailydoseofds.github.io/mcp-book/)
-- Built with tools from Vercel, Tailwind Labs, and the React team
-- Icons from [Lucide](https://lucide.dev)
+- Built with [Next.js](https://nextjs.org/)
+- UI components inspired by [shadcn/ui](https://ui.shadcn.com/)
+- CLI styling with [Chalk](https://github.com/chalk/chalk) and [Figlet](https://github.com/patorjk/figlet.js)
+- AI powered by [OpenAI](https://openai.com/)
 
-## 💬 Community & Support
+## 💬 Support
 
-- 📖 [Documentation](./README.md)
-- 🐛 [Report Issues](https://github.com/yourusername/landing-page-template/issues)
-- 💡 [Request Features](https://github.com/yourusername/landing-page-template/issues/new)
-- ⭐ [Star on GitHub](https://github.com/yourusername/landing-page-template)
+- **Issues**: [GitHub Issues](https://github.com/yourusername/redditech-landing-page-generator/issues)
+- **Discussions**: [GitHub Discussions](https://github.com/yourusername/redditech-landing-page-generator/discussions)
+- **Documentation**: [Full Docs](Documentation/)
 
 ## 🌟 Show Your Support
 
-If you find this project useful:
-
-- ⭐ Star this repository
-- 🐛 Report bugs
-- 💡 Suggest features
-- 🔀 Submit pull requests
-- 📢 Share with others
-
-## 📈 Roadmap
-
-- [ ] Visual theme editor
-- [ ] Template library with presets
-- [ ] A/B testing helpers
-- [ ] Advanced analytics integration
-- [ ] Component playground
-- [ ] CMS integration examples
-
-## ❓ FAQ
-
-**Q: Do I need an OpenAI API key?**  
-A: No, it's optional. The CLI works without it, but AI copywriting requires an API key.
-
-**Q: Can I use this for commercial projects?**  
-A: Yes! MIT license allows commercial use.
-
-**Q: How do I change the default port?**  
-A: Next.js auto-finds an available port. Check terminal output for the actual port.
-
-**Q: Can I add more sections?**  
-A: Yes! Follow the guide in [CUSTOMIZATION_GUIDE.md](CUSTOMIZATION_GUIDE.md).
-
-**Q: Is this production-ready?**  
-A: Yes! Build passes, fully typed, optimized, and deployed to production by many users.
+If you find this project helpful, please consider:
+- ⭐ Starring the repository
+- 🐛 Reporting bugs
+- 💡 Suggesting new features
+- 🤝 Contributing code
+- 📢 Sharing with others
 
 ---
 
-<div align="center">
-
-**Built with ❤️ using Next.js, React, TypeScript, and Tailwind CSS**
-
-[Documentation](./README.md) · [Report Bug](https://github.com/yourusername/landing-page-template/issues) · [Request Feature](https://github.com/yourusername/landing-page-template/issues/new)
-
-</div>
+**Made with ❤️ for developers who value speed and quality**

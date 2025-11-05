@@ -1,7 +1,7 @@
 {
-  "name": "landing-page-template",
+  "name": "redditech-landing-page-generator",
   "version": "1.0.0",
-  "description": "A reusable Next.js landing page template with YAML-driven content configuration",
+  "description": "Modern landing page generator with AI-powered copywriting, interactive CLI, and production-ready Next.js 16 + React 19 stack",
   "scripts": {
     "dev": "next dev",
     "build": "next build",
@@ -17,10 +17,27 @@
     "template",
     "yaml",
     "shadcn-ui",
-    "tailwindcss"
+    "tailwindcss",
+    "ai-powered",
+    "cli",
+    "generator",
+    "react",
+    "typescript",
+    "vercel",
+    "framer-motion",
+    "dark-mode",
+    "openai"
   ],
-  "author": "",
-  "license": "MIT",
+  "author": "Redditech",
+  "license": "Apache-2.0",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/yourusername/redditech-landing-page-generator.git"
+  },
+  "bugs": {
+    "url": "https://github.com/yourusername/redditech-landing-page-generator/issues"
+  },
+  "homepage": "https://github.com/yourusername/redditech-landing-page-generator#readme",
   "packageManager": "pnpm@10.18.3",
   "dependencies": {
     "@types/node": "^24.10.0",
