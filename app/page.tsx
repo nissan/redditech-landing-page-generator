@@ -4,6 +4,10 @@ import { CTASection } from "@/components/cta-section";
 import { FeaturesSection } from "@/components/features-section";
 import { TestimonialsSection } from "@/components/testimonials-section";
 import { HookStoryOfferSection } from "@/components/hook-story-offer-section";
+import { HowItWorksSection } from "@/components/how-it-works-section";
+import { TrustBadgesSection } from "@/components/trust-badges-section";
+import { FAQSection } from "@/components/faq-section";
+import { GuaranteeSection } from "@/components/guarantee-section";
 import { Footer } from "@/components/footer";
 import { ThemeToggle } from "@/components/theme-toggle";
 import type { Metadata } from "next";
@@ -28,14 +32,30 @@ export default function LandingPage() {
 
       <HeroSection config={config.hero} theme={config.theme} />
 
+      {config.howItWorks?.enabled && (
+        <HowItWorksSection config={config.howItWorks} theme={config.theme} />
+      )}
+
       <CTASection config={config.cta} theme={config.theme} />
 
       {config.features?.enabled && (
         <FeaturesSection config={config.features} theme={config.theme} />
       )}
 
+      {config.socialProof?.enabled && (
+        <TrustBadgesSection config={config.socialProof} theme={config.theme} />
+      )}
+
       {config.testimonials?.enabled && (
         <TestimonialsSection config={config.testimonials} theme={config.theme} />
+      )}
+
+      {config.guarantee?.enabled && (
+        <GuaranteeSection config={config.guarantee} theme={config.theme} />
+      )}
+
+      {config.faq?.enabled && (
+        <FAQSection config={config.faq} theme={config.theme} />
       )}
 
       {config.hookStoryOffer?.enabled && (

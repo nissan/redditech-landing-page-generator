@@ -9,6 +9,7 @@ import boxen from 'boxen';
 import { ConfigManager } from './config-manager.js';
 import { AIAssistant } from './ai-assistant.js';
 import { previewServer } from './preview.js';
+import { conversionWizardFlow } from './conversion-wizard.js';
 
 const sleep = (ms = 1000) => new Promise((resolve) => setTimeout(resolve, ms));
 
@@ -56,6 +57,10 @@ async function mainMenu() {
         {
           name: chalk.magenta('📖 Generate Hook-Story-Offer (AI)'),
           value: 'hook-story-offer',
+        },
+        {
+          name: chalk.cyan('🚀 Build Conversion-Optimized Landing Page (NEW)'),
+          value: 'conversion-wizard',
         },
         {
           name: chalk.yellow('👁️  Preview site (live reload)'),
@@ -964,6 +969,9 @@ async function main() {
         break;
       case 'hook-story-offer':
         await hookStoryOfferFlow();
+        break;
+      case 'conversion-wizard':
+        await conversionWizardFlow();
         break;
       case 'preview':
         await previewFlow();

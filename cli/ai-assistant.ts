@@ -467,4 +467,124 @@ export class AIAssistant {
       throw error;
     }
   }
+
+  async generateConversionHeadline(
+    audience: string,
+    painPoint: string,
+    solution: string,
+    formula: string
+  ): Promise<string[]> {
+    const prompt = `Generate 3 compelling headline variations for a landing page using the ${formula} formula.
+
+Target Audience: ${audience}
+Pain Point: ${painPoint}
+Solution/Result: ${solution}
+
+Requirements:
+- Each headline should be powerful and conversion-focused
+- Use action words and specific numbers where appropriate
+- Address the pain point directly
+- Promise a clear outcome
+- Keep each headline under 15 words
+- Make them unique from each other
+
+Return ONLY a JSON array of 3 headline strings, nothing else.
+Example: ["Headline 1", "Headline 2", "Headline 3"]`;
+
+    const response = await this.callLLM(prompt, 'You are an expert conversion copywriter specializing in high-converting headlines.');
+
+    try {
+      const cleaned = response.trim().replace(/```json\n?|\n?```/g, '');
+      const headlines = JSON.parse(cleaned);
+      return Array.isArray(headlines) ? headlines : [];
+    } catch (error) {
+      // Fallback: split by newlines
+      return response.split('\n').filter((line) => line.trim().length > 0).slice(0, 3);
+    }
+  }
+
+  async generateHowItWorksSteps(productDescription: string): Promise<any[]> {
+    const prompt = `Generate a clear 3-step "How It Works" process for this product/service:
+
+${productDescription}
+
+Requirements:
+- Exactly 3 steps
+- Each step should be action-oriented (start with a verb)
+- Include a brief description (1-2 sentences max)
+- Optionally include a quick timeframe (e.g., "2 minutes", "instantly")
+- Focus on simplicity and clarity
+
+Return ONLY a JSON array of 3 step objects with this format:
+[
+  {
+    "number": 1,
+    "title": "Step title",
+    "description": "Brief description",
+    "icon": "number-1",
+    "timeframe": "2 minutes"
+  },
+  ...
+]`;
+
+    const response = await this.callLLM(prompt, 'You are an expert at simplifying complex processes into clear, actionable steps.');
+
+    try {
+      const cleaned = response.trim().replace(/```json\n?|\n?```/g, '');
+      const steps = JSON.parse(cleaned);
+      return Array.isArray(steps) ? steps : [];
+    } catch (error) {
+      return [];
+    }
+  }
+
+  async generateFAQ(productDescription: string, targetAudience: string): Promise<any[]> {
+    const prompt = `Generate 5-7 frequently asked questions and answers for this product/service:
+
+Product/Service: ${productDescription}
+Target Audience: ${targetAudience}
+
+Requirements:
+- Address common objections (price, implementation, support, etc.)
+- Include "How is this different from..." questions
+- Address guarantee/refund concerns
+- Keep answers clear, concise, and reassuring
+- Focus on removing purchase anxiety
+
+Return ONLY a JSON array of FAQ objects with this format:
+[
+  {
+    "question": "The question",
+    "answer": "The answer (can include simple HTML like <strong> or <em>)"
+  },
+  ...
+]`;
+
+    const response = await this.callLLM(prompt, 'You are an expert at addressing customer objections and writing FAQ content that builds trust.');
+
+    try {
+      const cleaned = response.trim().replace(/```json\n?|\n?```/g, '');
+      const faqs = JSON.parse(cleaned);
+      return Array.isArray(faqs) ? faqs : [];
+    } catch (error) {
+      return [];
+    }
+  }
+
+  async generateGuaranteeCopy(guaranteeType: string): Promise<string> {
+    const prompt = `Write compelling money-back guarantee copy for a ${guaranteeType} money-back guarantee.
+
+Requirements:
+- Emphasize "no questions asked" or "hassle-free"
+- Build confidence and remove risk
+- Keep it clear and simple (2-3 sentences)
+- Make it reassuring and trustworthy
+- Don't be overly salesy
+
+Return ONLY the guarantee description text, nothing else.`;
+
+    const response = await this.callLLM(prompt, 'You are an expert at writing risk-reversal copy that builds customer confidence.');
+
+    return response.trim();
+  }
 }

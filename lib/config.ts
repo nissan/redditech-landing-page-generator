@@ -72,7 +72,10 @@ export interface LandingPageConfig {
       quote: string;
       author: string;
       role: string;
+      company?: string;
       avatar?: string;
+      result?: string; // e.g., "Increased sales 40%"
+      metric?: number; // e.g., 40
     }>;
   };
   footer: {
@@ -115,6 +118,87 @@ export interface LandingPageConfig {
       };
       guarantee?: string;
     };
+  };
+  howItWorks?: {
+    enabled: boolean;
+    heading: string;
+    subheading?: string;
+    steps: Array<{
+      number: number;
+      title: string;
+      description: string;
+      icon?: string;
+      timeframe?: string;
+    }>;
+  };
+  socialProof?: {
+    enabled: boolean;
+    metrics?: Array<{
+      type: 'customers' | 'satisfaction' | 'years' | 'custom';
+      value: string;
+      label: string;
+    }>;
+    trustBadges?: {
+      enabled: boolean;
+      heading?: string;
+      badges: Array<{
+        type: 'security' | 'media' | 'certification' | 'custom';
+        image?: string;
+        text: string;
+        url?: string;
+      }>;
+    };
+  };
+  faq?: {
+    enabled: boolean;
+    heading: string;
+    subheading?: string;
+    items: Array<{
+      question: string;
+      answer: string;
+      category?: string;
+    }>;
+  };
+  guarantee?: {
+    enabled: boolean;
+    heading: string;
+    type: '30-day' | '60-day' | '90-day' | 'lifetime' | 'custom';
+    duration?: string;
+    description: string;
+    icon?: string;
+    badge?: string;
+    conditions?: string;
+  };
+  comparison?: {
+    enabled: boolean;
+    heading: string;
+    subheading?: string;
+    highlightColumn: 'you';
+    columns: Array<{
+      id: string;
+      name: string;
+      highlight: boolean;
+    }>;
+    rows: Array<{
+      feature: string;
+      you: boolean | string;
+      competitor1?: boolean | string;
+      competitor2?: boolean | string;
+    }>;
+  };
+  urgency?: {
+    enabled: boolean;
+    type: 'countdown' | 'limited-quantity' | 'bonus-expires' | 'none';
+    countdown?: {
+      endDate: string;
+      showTimer: boolean;
+    };
+    limitedQuantity?: {
+      remaining: number;
+      total: number;
+    };
+    message: string;
+    placement: 'hero' | 'cta' | 'sticky' | 'all';
   };
 }
 
