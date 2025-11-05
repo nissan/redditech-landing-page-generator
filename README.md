@@ -10,11 +10,12 @@
 
 ## ✨ Why LPG?
 
-- **🤖 AI-Powered CLI**: Built-in GPT-4o-mini copywriting assistant helps you craft compelling headlines and copy
+- **🤖 AI-Powered CLI**: Built-in multi-LLM copywriting (OpenAI GPT-5, Claude Sonnet 4, or FREE local Ollama)
+- **🎯 Hook-Story-Offer Framework**: AI-powered conversion copywriting based on Russell Brunson's proven framework
 - **⚡ 5-Minute Setup**: From zero to deployed landing page in under 5 minutes
 - **🎨 Modern Tech Stack**: Built on Next.js 16, React 19, and Tailwind CSS v4
 - **🏗️ Production-Ready**: Fully typed with TypeScript, validated inputs, and comprehensive error handling
-- **📝 YAML-Driven**: Edit your content without touching code
+- **📝 YAML-Driven**: Edit your content without touching code - no coding required
 - **🎭 Beautiful CLI**: Interactive terminal interface with gradient text, animations, and real-time previews
 - **🌙 Dark Mode**: Built-in theme toggle with system detection
 - **📱 Responsive**: Looks perfect on all devices
@@ -73,6 +74,7 @@ The heart of this project is the beautiful CLI that makes configuration effortle
 
 - **Visual Wizard**: Step-by-step prompts guide you through every option
 - **AI Copywriting**: Get help writing headlines, descriptions, and CTAs with GPT-5, Claude Sonnet 4, or local Ollama
+- **Hook-Story-Offer Generator**: AI-powered conversion framework for complete landing page narratives
 - **Live Preview**: Launch a dev server directly from the CLI
 - **Color Validation**: Hex color picker with real-time validation
 - **Settings Management**: Store your LLM provider API keys securely
@@ -85,11 +87,29 @@ pnpm configure
 ### Landing Page Components
 
 - **Hero Section**: Eye-catching headline with image and animations
+- **Hook-Story-Offer Section**: Conversion-optimized storytelling framework (optional)
 - **Features Grid**: Icon-based feature cards with descriptions
 - **Testimonials**: Customer quotes with avatars (optional)
 - **CTA Section**: Email capture form or direct link
 - **Footer**: Copyright, links, and social media icons
 - **Theme Toggle**: Light/dark mode with smooth transitions
+
+### Hook-Story-Offer Framework
+
+Generate complete landing page narratives using Russell Brunson's proven conversion framework:
+
+- **Hook**: Catch attention through curiosity, empathy, and compelling promises
+- **Story**: Share your transformation journey (low point → solution → current state)
+- **Offer**: Present an irresistible offer with urgency, value, and guarantees
+
+**Generate with AI:**
+```bash
+pnpm configure → "Generate Hook-Story-Offer (AI)"
+```
+
+The CLI will guide you through creating compelling copy based on your business story. Works with all three LLM providers (OpenAI, Claude, or Ollama).
+
+See [Hook-Story-Offer Guide](Documentation/HOOK_STORY_OFFER.md) for detailed instructions.
 
 ### Built-in Animations
 
@@ -317,13 +337,21 @@ pnpm cli:build
 
 Comprehensive documentation is available in the [`Documentation/`](Documentation/) folder:
 
+### Getting Started
 - [**QUICKSTART.md**](Documentation/QUICKSTART.md) - 5-minute getting started guide
-- [**CLI_GUIDE.md**](Documentation/CLI_GUIDE.md) - Complete CLI documentation
-- [**CLI_EXAMPLES.md**](Documentation/CLI_EXAMPLES.md) - Real-world configuration examples
-- [**CUSTOMIZATION_GUIDE.md**](Documentation/CUSTOMIZATION_GUIDE.md) - Advanced customization
-- [**PROJECT_STRUCTURE.md**](Documentation/PROJECT_STRUCTURE.md) - Architecture details
-- [**TEMPLATE_OVERVIEW.md**](Documentation/TEMPLATE_OVERVIEW.md) - Features overview
-- [**CONTRIBUTING.md**](Documentation/CONTRIBUTING.md) - Contribution guidelines
+- [**CLI_COMPLETE.md**](Documentation/CLI_COMPLETE.md) - Complete CLI documentation with examples
+
+### Features & Customization
+- [**HOOK_STORY_OFFER.md**](Documentation/HOOK_STORY_OFFER.md) - AI-powered conversion copywriting guide
+- [**CUSTOMIZATION_GUIDE.md**](Documentation/CUSTOMIZATION_GUIDE.md) - Advanced customization options
+- [**TEMPLATE_OVERVIEW.md**](Documentation/TEMPLATE_OVERVIEW.md) - Features and use cases overview
+
+### Technical
+- [**PROJECT_STRUCTURE.md**](Documentation/PROJECT_STRUCTURE.md) - Architecture and file organization
+- [**CONTRIBUTING.md**](CONTRIBUTING.md) - Contribution guidelines
+
+### Publishing & Deployment
+- [**GITHUB_PUBLISHING.md**](Documentation/GITHUB_PUBLISHING.md) - Complete guide to publishing your project
 
 ## 🤝 Contributing
 
