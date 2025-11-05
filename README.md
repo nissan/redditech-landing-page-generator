@@ -1,4 +1,4 @@
-# 🚀 Redditech Landing Page Generator
+# 🚀 Redditech LPG (Landing Page Generator)
 
 [![License](https://img.shields.io/badge/License-Apache%202.0-blue.svg)](https://opensource.org/licenses/Apache-2.0)
 [![Node](https://img.shields.io/badge/node-%3E%3D18-brightgreen.svg)](https://nodejs.org/)
@@ -8,7 +8,7 @@
 
 **The modern landing page generator with AI-powered copywriting built right in.** Create beautiful, production-ready landing pages in minutes, not hours.
 
-## ✨ Why Redditech?
+## ✨ Why LPG?
 
 - **🤖 AI-Powered CLI**: Built-in GPT-4o-mini copywriting assistant helps you craft compelling headlines and copy
 - **⚡ 5-Minute Setup**: From zero to deployed landing page in under 5 minutes
