@@ -15,7 +15,7 @@ const sleep = (ms = 1000) => new Promise((resolve) => setTimeout(resolve, ms));
 async function welcome() {
   console.clear();
 
-  const title = figlet.textSync('Landing Page\nConfigurator', {
+  const title = figlet.textSync('Redditech LPG', {
     font: 'Standard',
     horizontalLayout: 'default',
   });
