@@ -1,0 +1,60 @@
+{
+  "name": "landing-page-template",
+  "version": "1.0.0",
+  "description": "A reusable Next.js landing page template with YAML-driven content configuration",
+  "scripts": {
+    "dev": "next dev",
+    "build": "next build",
+    "start": "next start",
+    "lint": "next lint",
+    "type-check": "tsc --noEmit",
+    "configure": "tsx cli/index.ts",
+    "cli:build": "tsc --project cli/tsconfig.json"
+  },
+  "keywords": [
+    "nextjs",
+    "landing-page",
+    "template",
+    "yaml",
+    "shadcn-ui",
+    "tailwindcss"
+  ],
+  "author": "",
+  "license": "MIT",
+  "packageManager": "pnpm@10.18.3",
+  "dependencies": {
+    "@types/node": "^24.10.0",
+    "@types/react": "^19.2.2",
+    "boxen": "^8.0.1",
+    "chalk": "4.1.2",
+    "clsx": "^2.1.1",
+    "dotenv": "^17.2.3",
+    "figlet": "1.7.0",
+    "framer-motion": "^12.23.24",
+    "gradient-string": "2.0.2",
+    "inquirer": "8.2.5",
+    "js-yaml": "^4.1.0",
+    "lucide-react": "^0.552.0",
+    "nanospinner": "^1.2.2",
+    "next": "^16.0.1",
+    "next-themes": "^0.4.6",
+    "openai": "^6.8.1",
+    "ora": "5.4.1",
+    "react": "^19.2.0",
+    "react-dom": "^19.2.0",
+    "tailwind-merge": "^3.3.1",
+    "tailwindcss-animate": "^1.0.7",
+    "typescript": "^5.9.3"
+  },
+  "devDependencies": {
+    "@tailwindcss/postcss": "^4.1.16",
+    "@types/figlet": "^1.7.0",
+    "@types/gradient-string": "^1.1.6",
+    "@types/inquirer": "^9.0.9",
+    "@types/js-yaml": "^4.0.9",
+    "autoprefixer": "^10.4.21",
+    "postcss": "^8.5.6",
+    "tailwindcss": "^4.1.16",
+    "tsx": "^4.20.6"
+  }
+}

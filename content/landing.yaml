@@ -1,0 +1,83 @@
+metadata:
+  title: Master Identity and Access Management like a Pro
+  description: Learn to apply the various identity and access management protocols such as OAuth2, OIDC, SAML, WebAuthN and others in a professional manner
+  favicon: /favicon.ico
+  ogImage: /og-image.png
+theme:
+  primaryColor: '#1677be'
+  backgroundColor: '#ffffff'
+  textColor: '#1a1a1a'
+  accentColor: '#0f5a8a'
+hero:
+  headline: Master Identity and Access Management like a Pro
+  subheadline: Join a community of professional developers in learning secure identity and access management practices
+  image:
+    src: /guidebook-cover.png
+    alt: MCP Guidebook Cover
+    width: 1000
+    height: 1200
+  animation:
+    enabled: true
+    type: fade
+    hoverEffect: true
+cta:
+  heading: Get Early Access Today!
+  description: Start your journey early as we are continuously building out new and updated content
+  form:
+    enabled: true
+    action: /api/subscribe
+    method: POST
+    fields:
+      - name: email
+        type: email
+        placeholder: nissan@reddi.tech
+        required: true
+        validation: email
+    button:
+      text: Get Free Access
+      style: primary
+    privacyText: We respect your privacy. Unsubscribe at any time.
+features:
+  enabled: true
+  heading: What You'll Learn
+  items:
+    - title: Full-Stack Development
+      description: Build complete AI applications from frontend to backend
+      icon: code
+    - title: Production Ready
+      description: Deploy scalable AI solutions with confidence
+      icon: rocket
+    - title: Best Practices
+      description: Learn industry-standard patterns and techniques
+      icon: star
+testimonials:
+  enabled: true
+  heading: What Developers Say
+  items:
+    - quote: This guidebook transformed how I build AI applications
+      author: Jane Doe
+      role: Senior AI Engineer
+      avatar: /avatars/jane.jpg
+    - quote: Comprehensive and practical. Highly recommended!
+      author: John Smith
+      role: ML Developer
+      avatar: /avatars/john.jpg
+footer:
+  copyright: © 2025 Daily Dose of Data Science. All rights reserved.
+  links:
+    - text: Privacy Policy
+      url: /privacy
+    - text: Terms of Service
+      url: /terms
+  social:
+    - platform: twitter
+      url: https://twitter.com/example
+    - platform: github
+      url: https://github.com/example
+    - platform: linkedin
+      url: https://linkedin.com/company/example
+analytics:
+  googleAnalytics: ''
+  plausible: ''
+email:
+  provider: custom

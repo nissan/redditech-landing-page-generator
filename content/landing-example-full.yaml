@@ -1,0 +1,209 @@
+# Landing Page Configuration - Full Example
+# This file shows ALL available configuration options
+# Copy this to landing.yaml and customize as needed
+
+# ==========================================
+# Site Metadata (for SEO and social sharing)
+# ==========================================
+metadata:
+  title: "Master Full-Stack AI Engineering with MCP Guidebook"
+  description: "Learn to build production-ready AI applications from 150,000+ AI professionals"
+  favicon: "/favicon.ico"
+  ogImage: "/og-image.png"  # 1200x630px recommended for social media
+
+# ==========================================
+# Theme Colors (customize your brand)
+# ==========================================
+theme:
+  primaryColor: "#1677be"      # Main brand color (buttons, links, accents)
+  backgroundColor: "#ffffff"    # Light mode background (usually white)
+  textColor: "#1a1a1a"         # Main text color (dark gray or black)
+  accentColor: "#0f5a8a"       # Darker shade for hover states
+
+# ==========================================
+# Hero Section (first thing visitors see)
+# ==========================================
+hero:
+  headline: "Master Full-Stack AI Engineering with MCP Guidebook"
+  subheadline: "Join 150,000+ AI professionals building production-ready applications"
+
+  image:
+    src: "/guidebook-cover.png"  # Path to your hero image
+    alt: "MCP Guidebook Cover"   # Alt text for accessibility
+    width: 1000                  # Actual image width in pixels
+    height: 1200                 # Actual image height in pixels
+
+  animation:
+    enabled: true                # Enable/disable animations
+    type: "scale"               # Options: "scale", "fade", "slide"
+    hoverEffect: true           # Add zoom effect on hover
+
+# ==========================================
+# Call-to-Action Section (conversion goal)
+# ==========================================
+cta:
+  heading: "Get Your Free Guidebook"
+  description: "Start your journey to becoming a full-stack AI engineer today"
+
+  # OPTION 1: Email Capture Form
+  form:
+    enabled: true                      # Set to false to use link instead
+    action: "/api/subscribe"           # API endpoint for form submission
+    method: "POST"                     # HTTP method
+
+    fields:
+      - name: "email"
+        type: "email"
+        placeholder: "Enter your email address"
+        required: true
+        validation: "email"
+
+    button:
+      text: "Get Free Access"
+      style: "primary"                 # Button style
+
+    privacyText: "We respect your privacy. Unsubscribe at any time."
+
+  # OPTION 2: Direct Link (uncomment to use instead of form)
+  # link:
+  #   url: "https://example.com/download"
+  #   text: "Download Now"
+  #   openInNewTab: true
+
+# ==========================================
+# Features Section (OPTIONAL - showcase benefits)
+# ==========================================
+features:
+  enabled: false                       # Set to true to show this section
+  heading: "What You'll Learn"
+
+  items:
+    - title: "Full-Stack Development"
+      description: "Build complete AI applications from frontend to backend"
+      icon: "code"                     # Options: code, rocket, star, zap, shield, users
+
+    - title: "Production Ready"
+      description: "Deploy scalable AI solutions with confidence"
+      icon: "rocket"
+
+    - title: "Best Practices"
+      description: "Learn industry-standard patterns and techniques"
+      icon: "star"
+
+    - title: "Real-World Projects"
+      description: "Apply knowledge through hands-on projects"
+      icon: "zap"
+
+    - title: "Security First"
+      description: "Build secure applications from the ground up"
+      icon: "shield"
+
+    - title: "Community Support"
+      description: "Join a thriving community of developers"
+      icon: "users"
+
+# ==========================================
+# Testimonials Section (OPTIONAL - social proof)
+# ==========================================
+testimonials:
+  enabled: false                       # Set to true to show this section
+  heading: "What Developers Say"
+
+  items:
+    - quote: "This guidebook transformed how I build AI applications. The step-by-step approach made complex concepts easy to understand."
+      author: "Jane Doe"
+      role: "Senior AI Engineer at TechCorp"
+      avatar: "/avatars/jane.jpg"     # Optional: path to avatar image
+
+    - quote: "Comprehensive and practical. The best resource I've found for full-stack AI development. Highly recommended!"
+      author: "John Smith"
+      role: "ML Developer at StartupXYZ"
+      avatar: "/avatars/john.jpg"
+
+    - quote: "From beginner to confident AI engineer in just a few months. The projects were challenging but incredibly rewarding."
+      author: "Sarah Johnson"
+      role: "Software Engineer"
+      avatar: "/avatars/sarah.jpg"
+
+    - quote: "The MCP guidebook gave me the skills I needed to land my dream job. Worth every minute of study time."
+      author: "Michael Chen"
+      role: "AI Consultant"
+      avatar: "/avatars/michael.jpg"
+
+# ==========================================
+# Footer (always visible)
+# ==========================================
+footer:
+  copyright: "© 2025 Daily Dose of Data Science. All rights reserved."
+
+  links:
+    - text: "Privacy Policy"
+      url: "/privacy"
+
+    - text: "Terms of Service"
+      url: "/terms"
+
+    - text: "Contact Us"
+      url: "/contact"
+
+    - text: "About"
+      url: "/about"
+
+  social:
+    - platform: "twitter"
+      url: "https://twitter.com/yourusername"
+
+    - platform: "github"
+      url: "https://github.com/yourusername"
+
+    - platform: "linkedin"
+      url: "https://linkedin.com/company/yourcompany"
+
+# ==========================================
+# Analytics (OPTIONAL - tracking)
+# ==========================================
+analytics:
+  googleAnalytics: ""                  # Add GA4 Measurement ID (e.g., G-XXXXXXXXXX)
+  plausible: ""                        # Add Plausible domain
+
+# ==========================================
+# Email Integration (for developers)
+# ==========================================
+email:
+  provider: "custom"                   # Options: custom, mailchimp, convertkit, sendgrid
+  # For custom provider, implement /api/subscribe endpoint
+  # For third-party providers, add API keys in .env.local
+
+# ==========================================
+# USAGE NOTES:
+# ==========================================
+#
+# 1. Required Fields:
+#    - metadata (title, description)
+#    - theme (all colors)
+#    - hero (headline, subheadline, image)
+#    - cta (heading, description, form OR link)
+#    - footer (copyright)
+#
+# 2. Optional Sections:
+#    - features (set enabled: true to show)
+#    - testimonials (set enabled: true to show)
+#    - analytics (add IDs to enable)
+#
+# 3. Image Paths:
+#    - Always start with "/" (e.g., "/my-image.png")
+#    - Place images in the "public/" folder
+#
+# 4. Colors:
+#    - Use hex format (e.g., "#1677be")
+#    - Test in both light and dark modes
+#
+# 5. Icons:
+#    - Available: code, rocket, star, zap, shield, users
+#    - More icons can be added in components/features-section.tsx
+#
+# 6. Social Platforms:
+#    - Available: twitter, github, linkedin
+#    - More can be added in components/footer.tsx
+#
+# ==========================================
