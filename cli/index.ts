@@ -54,6 +54,10 @@ async function mainMenu() {
           value: 'ai-copy',
         },
         {
+          name: chalk.magenta('📖 Generate Hook-Story-Offer (AI)'),
+          value: 'hook-story-offer',
+        },
+        {
           name: chalk.yellow('👁️  Preview site (live reload)'),
           value: 'preview',
         },
@@ -284,10 +288,11 @@ async function aiCopywritingFlow() {
   const ai = new AIAssistant();
 
   if (!ai.isConfigured()) {
+    const provider = ai.getCurrentProvider();
     console.log(
       boxen(
-        chalk.yellow('⚠️  OpenAI API key not configured\n\n') +
-        chalk.gray('Please set your API key in Settings first'),
+        chalk.yellow(`⚠️  ${provider} is not configured\n\n`) +
+        chalk.gray('Please configure your LLM provider in Settings first'),
         {
           padding: 1,
           margin: 1,
@@ -299,7 +304,9 @@ async function aiCopywritingFlow() {
     return;
   }
 
+  const currentProvider = ai.getCurrentProvider();
   console.log(chalk.cyan.bold('\n🤖 AI Copywriting Assistant\n'));
+  console.log(chalk.gray(`Using: ${currentProvider}\n`));
 
   const { section } = await inquirer.prompt([
     {
@@ -418,28 +425,120 @@ async function settingsFlow() {
   console.log(chalk.cyan.bold('\n⚙️  Settings\n'));
 
   const ai = new AIAssistant();
-  const currentKey = ai.getApiKey();
+  const currentProvider = ai.getCurrentProvider();
+  const providerStatus = ai.getProviderStatus();
+
+  // Check if Ollama is installed
+  const checkingSpinner = createSpinner('Checking Ollama installation...').start();
+  const ollamaInstalled = await ai.isOllamaInstalled();
+  checkingSpinner.stop();
+
+  // Build choices with status indicators
+  const choices = [
+    {
+      name: chalk.magenta('🔧 Select LLM Provider'),
+      value: 'select-provider',
+    },
+    { name: chalk.gray('─'.repeat(40)), disabled: true },
+  ];
+
+  providerStatus.forEach((status) => {
+    const icon = status.configured ? chalk.green('✓') : chalk.yellow('○');
+    const current = status.provider === currentProvider ? chalk.cyan(' (active)') : '';
+    let label = '';
+    let disabled = false;
+
+    if (status.provider === 'openai') {
+      label = 'OpenAI API Key';
+    } else if (status.provider === 'claude') {
+      label = 'Claude API Key';
+    } else if (status.provider === 'ollama') {
+      if (ollamaInstalled) {
+        label = 'Ollama Configuration';
+      } else {
+        label = 'Ollama Configuration ' + chalk.red('(not installed)');
+        disabled = true;
+      }
+    }
+
+    choices.push({
+      name: `${icon} ${label}${current}`,
+      value: `config-${status.provider}`,
+      disabled: disabled ? 'Ollama is not installed or not running' : false,
+    } as any);
+  });
+
+  choices.push({ name: chalk.gray('← Back'), value: 'back' });
 
   const { action } = await inquirer.prompt([
     {
       type: 'list',
       name: 'action',
       message: 'What would you like to configure?',
-      choices: [
-        {
-          name: currentKey
-            ? chalk.green('✓ OpenAI API key (configured)')
-            : chalk.yellow('○ OpenAI API key (not set)'),
-          value: 'openai-key',
-        },
-        { name: chalk.gray('← Back'), value: 'back' },
-      ],
+      choices,
     },
   ]);
 
   if (action === 'back') return;
 
-  if (action === 'openai-key') {
+  if (action === 'select-provider') {
+    // Build provider choices
+    const providerChoices: any[] = [
+      {
+        name: chalk.blue('OpenAI (GPT-4o-mini)') + chalk.gray(' - Requires API key'),
+        value: 'openai',
+      },
+      {
+        name: chalk.magenta('Claude (Haiku 3.5)') + chalk.gray(' - Requires API key'),
+        value: 'claude',
+      },
+    ];
+
+    if (ollamaInstalled) {
+      providerChoices.push({
+        name: chalk.green('Ollama (Local LLM)') + chalk.gray(' - Free, runs locally'),
+        value: 'ollama',
+      });
+    } else {
+      providerChoices.push({
+        name: chalk.gray('Ollama (Local LLM)') + chalk.red(' - Not installed'),
+        value: 'ollama',
+        disabled: 'Install Ollama from https://ollama.com',
+      });
+    }
+
+    const { provider } = await inquirer.prompt([
+      {
+        type: 'list',
+        name: 'provider',
+        message: 'Select your preferred LLM provider:',
+        choices: providerChoices,
+        default: currentProvider,
+      },
+    ]);
+
+    ai.setProvider(provider);
+    console.log(chalk.green(`\n✓ LLM provider set to: ${provider}`));
+
+    // Check if the selected provider is configured
+    const isConfigured = ai.isConfigured();
+    if (!isConfigured) {
+      console.log(
+        boxen(
+          chalk.yellow(`⚠️  ${provider} is not configured yet\n\n`) +
+          chalk.gray('Please configure it from the settings menu'),
+          {
+            padding: 1,
+            margin: 1,
+            borderStyle: 'round',
+            borderColor: 'yellow',
+          }
+        )
+      );
+    }
+  }
+
+  if (action === 'config-openai') {
     const { apiKey } = await inquirer.prompt([
       {
         type: 'password',
@@ -450,16 +549,383 @@ async function settingsFlow() {
     ]);
 
     if (apiKey) {
-      const spinner = createSpinner('Verifying API key...').start();
+      const spinner = createSpinner('Saving OpenAI API key...').start();
       await sleep(500);
 
       try {
-        ai.setApiKey(apiKey);
-        spinner.success({ text: chalk.green('API key saved!') });
+        ai.setApiKey('openai', apiKey);
+        spinner.success({ text: chalk.green('OpenAI API key saved!') });
       } catch (error) {
         spinner.error({ text: chalk.red('Failed to save API key') });
       }
     }
+  }
+
+  if (action === 'config-claude') {
+    const { apiKey } = await inquirer.prompt([
+      {
+        type: 'password',
+        name: 'apiKey',
+        message: 'Enter your Anthropic Claude API key:',
+        mask: '*',
+      },
+    ]);
+
+    if (apiKey) {
+      const spinner = createSpinner('Saving Claude API key...').start();
+      await sleep(500);
+
+      try {
+        ai.setApiKey('claude', apiKey);
+        spinner.success({ text: chalk.green('Claude API key saved!') });
+      } catch (error) {
+        spinner.error({ text: chalk.red('Failed to save API key') });
+      }
+    }
+  }
+
+  if (action === 'config-ollama') {
+    console.log(chalk.gray('\nOllama runs locally on your machine'));
+    console.log(chalk.gray('Make sure Ollama is installed and running\n'));
+
+    // Check if Ollama is available and get models
+    const checkSpinner = createSpinner('Checking for available Ollama models...').start();
+    const availableModels = await ai.getOllamaModels();
+
+    if (availableModels.length === 0) {
+      checkSpinner.warn({ text: chalk.yellow('No Ollama models found') });
+      console.log(
+        boxen(
+          chalk.yellow('⚠️  Ollama is not running or no models installed\n\n') +
+          chalk.white('1. Install Ollama from https://ollama.com\n') +
+          chalk.white('2. Start Ollama: ') + chalk.cyan('ollama serve\n') +
+          chalk.white('3. Pull a model: ') + chalk.cyan('ollama pull granite4:latest'),
+          {
+            padding: 1,
+            margin: 1,
+            borderStyle: 'round',
+            borderColor: 'yellow',
+          }
+        )
+      );
+
+      // Still allow manual configuration
+      const { continueManual } = await inquirer.prompt([
+        {
+          type: 'confirm',
+          name: 'continueManual',
+          message: 'Configure manually anyway?',
+          default: false,
+        },
+      ]);
+
+      if (!continueManual) return;
+    } else {
+      checkSpinner.success({ text: chalk.green(`Found ${availableModels.length} Ollama model(s)`) });
+
+      // Show available models
+      console.log(chalk.gray('\nAvailable models:'));
+      availableModels.forEach((model) => {
+        console.log(chalk.cyan(`  • ${model}`));
+      });
+      console.log();
+    }
+
+    // Prompt for model selection
+    const modelPrompt: any = {
+      name: 'model',
+      message: 'Select or enter Ollama model:',
+    };
+
+    if (availableModels.length > 0) {
+      // Use list selection if models available
+      modelPrompt.type = 'list';
+      modelPrompt.choices = [
+        ...availableModels.map((model) => ({ name: model, value: model })),
+        { name: chalk.gray('Enter custom model name'), value: '__custom__' },
+      ];
+      modelPrompt.default = ai.getApiKey('ollama') || availableModels[0];
+    } else {
+      // Use text input if no models found
+      modelPrompt.type = 'input';
+      modelPrompt.default = ai.getApiKey('ollama') || 'granite4:latest';
+    }
+
+    let selectedModel = (await inquirer.prompt([modelPrompt])).model;
+
+    // If custom option selected, prompt for model name
+    if (selectedModel === '__custom__') {
+      const { customModel } = await inquirer.prompt([
+        {
+          type: 'input',
+          name: 'customModel',
+          message: 'Enter model name:',
+          default: 'granite4:latest',
+          validate: (input) => input.trim().length > 0 || 'Model name is required',
+        },
+      ]);
+      selectedModel = customModel;
+    }
+
+    const { baseUrl } = await inquirer.prompt([
+      {
+        type: 'input',
+        name: 'baseUrl',
+        message: 'Ollama base URL:',
+        default: 'http://localhost:11434',
+      },
+    ]);
+
+    const spinner = createSpinner('Configuring Ollama...').start();
+    await sleep(500);
+
+    try {
+      ai.setOllamaConfig(selectedModel, baseUrl);
+      spinner.success({ text: chalk.green('Ollama configured!') });
+
+      // Check if selected model is available
+      if (availableModels.length > 0 && !availableModels.includes(selectedModel)) {
+        console.log(
+          boxen(
+            chalk.yellow(`⚠️  Model "${selectedModel}" not found locally\n\n`) +
+            chalk.white('Pull the model: ') + chalk.cyan(`ollama pull ${selectedModel}`),
+            {
+              padding: 1,
+              margin: 1,
+              borderStyle: 'round',
+              borderColor: 'yellow',
+            }
+          )
+        );
+      } else {
+        console.log(
+          boxen(
+            chalk.green('✓ Ollama configured successfully!\n\n') +
+            chalk.white('Model: ') + chalk.cyan(selectedModel) + '\n' +
+            chalk.gray('Ready to use for AI features'),
+            {
+              padding: 1,
+              margin: 1,
+              borderStyle: 'round',
+              borderColor: 'green',
+            }
+          )
+        );
+      }
+    } catch (error) {
+      spinner.error({ text: chalk.red('Failed to configure Ollama') });
+    }
+  }
+}
+
+async function hookStoryOfferFlow() {
+  const ai = new AIAssistant();
+
+  if (!ai.isConfigured()) {
+    const provider = ai.getCurrentProvider();
+    console.log(
+      boxen(
+        chalk.yellow(`⚠️  ${provider} is not configured\n\n`) +
+        chalk.gray('Please configure your LLM provider in Settings first'),
+        {
+          padding: 1,
+          margin: 1,
+          borderStyle: 'round',
+          borderColor: 'yellow',
+        }
+      )
+    );
+    return;
+  }
+
+  const currentProvider = ai.getCurrentProvider();
+  console.log(chalk.cyan.bold('\n📖 Hook-Story-Offer Framework Generator\n'));
+  console.log(chalk.gray(`Based on Russell Brunson's proven framework`));
+  console.log(chalk.gray(`Using: ${currentProvider}\n`));
+
+  // Context
+  console.log(chalk.yellow('── Context ──\n'));
+  const { context } = await inquirer.prompt([
+    {
+      type: 'input',
+      name: 'context',
+      message: 'Describe your business/product context:',
+      validate: (input) => input.trim().length > 0 || 'Context is required',
+    },
+  ]);
+
+  // Backstory
+  console.log(chalk.yellow('\n── Your Backstory ──\n'));
+  const backstory = await inquirer.prompt([
+    {
+      type: 'input',
+      name: 'lowPoint',
+      message: 'What was your low point? (I used to be a...):',
+      validate: (input) => input.trim().length > 0 || 'Low point is required',
+    },
+    {
+      type: 'input',
+      name: 'solution',
+      message: 'What solution did you find? (then I found...):',
+      validate: (input) => input.trim().length > 0 || 'Solution is required',
+    },
+    {
+      type: 'input',
+      name: 'currentState',
+      message: 'Where are you now? (and now I help others...):',
+      validate: (input) => input.trim().length > 0 || 'Current state is required',
+    },
+  ]);
+
+  // Offer
+  console.log(chalk.yellow('\n── Your Offer ──\n'));
+  const { offer } = await inquirer.prompt([
+    {
+      type: 'input',
+      name: 'offer',
+      message: 'Describe your offer (product/service details):',
+      validate: (input) => input.trim().length > 0 || 'Offer is required',
+    },
+  ]);
+
+  // Tone
+  const { tone } = await inquirer.prompt([
+    {
+      type: 'list',
+      name: 'tone',
+      message: 'What tone should the copy have?',
+      choices: [
+        'Professional',
+        'Casual & Friendly',
+        'Urgent & Compelling',
+        'Inspirational',
+        'Empathetic & Authentic',
+      ],
+      default: 'Empathetic & Authentic',
+    },
+  ]);
+
+  // Optional pricing
+  console.log(chalk.yellow('\n── Pricing (Optional) ──\n'));
+  const pricing = await inquirer.prompt([
+    {
+      type: 'confirm',
+      name: 'hasPricing',
+      message: 'Do you want to include pricing?',
+      default: false,
+    },
+  ]);
+
+  let pricingDetails = null;
+  if (pricing.hasPricing) {
+    pricingDetails = await inquirer.prompt([
+      {
+        type: 'input',
+        name: 'originalPrice',
+        message: 'Original price (e.g., $99):',
+      },
+      {
+        type: 'input',
+        name: 'discountedPrice',
+        message: 'Discounted price (e.g., $49):',
+      },
+      {
+        type: 'input',
+        name: 'urgencyText',
+        message: 'Urgency text (e.g., "Limited Time Only"):',
+        default: 'Limited Time Offer',
+      },
+    ]);
+  }
+
+  // Generate with AI
+  const spinner = createSpinner('🤖 AI is crafting your Hook-Story-Offer...').start();
+
+  try {
+    const result = await ai.generateHookStoryOffer({
+      context,
+      backstory,
+      offer,
+      tone,
+    });
+
+    spinner.success({ text: chalk.green('Generated Hook-Story-Offer!') });
+
+    // Display results
+    console.log(chalk.yellow('\n── The Hook ──\n'));
+    console.log(
+      boxen(chalk.cyan(result.hook), {
+        padding: 1,
+        margin: 0.5,
+        borderStyle: 'round',
+        borderColor: 'cyan',
+      })
+    );
+
+    console.log(chalk.yellow('\n── The Story ──\n'));
+    console.log(
+      boxen(chalk.white(result.story), {
+        padding: 1,
+        margin: 0.5,
+        borderStyle: 'round',
+        borderColor: 'blue',
+      })
+    );
+
+    console.log(chalk.yellow('\n── The Offer ──\n'));
+    console.log(chalk.white.bold(result.offerHeading));
+    console.log();
+    result.features.forEach((feature, i) => {
+      console.log(chalk.green(`  ✓ ${feature}`));
+    });
+    console.log();
+    console.log(chalk.gray('Guarantee: ' + result.guarantee));
+
+    // Ask to save
+    const { save } = await inquirer.prompt([
+      {
+        type: 'confirm',
+        name: 'save',
+        message: 'Save this to your landing page configuration?',
+        default: true,
+      },
+    ]);
+
+    if (save) {
+      const config = new ConfigManager();
+
+      config.set('hookStoryOffer.enabled', true);
+      config.set('hookStoryOffer.hook.text', result.hook);
+      config.set('hookStoryOffer.story.text', result.story);
+      config.set('hookStoryOffer.offer.heading', result.offerHeading);
+      config.set('hookStoryOffer.offer.features', result.features);
+      config.set('hookStoryOffer.offer.guarantee', result.guarantee);
+      config.set('hookStoryOffer.offer.cta.text', 'Get Started Now');
+
+      if (pricingDetails) {
+        config.set('hookStoryOffer.offer.pricing.originalPrice', pricingDetails.originalPrice);
+        config.set('hookStoryOffer.offer.pricing.discountedPrice', pricingDetails.discountedPrice);
+        config.set('hookStoryOffer.offer.pricing.urgencyText', pricingDetails.urgencyText);
+      }
+
+      config.save();
+
+      console.log(
+        boxen(
+          chalk.white('✅ Hook-Story-Offer saved to configuration!\n\n') +
+          chalk.gray('Run ') + chalk.cyan('pnpm dev') + chalk.gray(' to see your changes'),
+          {
+            padding: 1,
+            margin: 1,
+            borderStyle: 'round',
+            borderColor: 'green',
+          }
+        )
+      );
+    }
+  } catch (error) {
+    spinner.error({ text: chalk.red('Failed to generate Hook-Story-Offer') });
+    console.error(chalk.red('\nError:'), error instanceof Error ? error.message : 'Unknown error');
   }
 }
 
@@ -495,6 +961,9 @@ async function main() {
         break;
       case 'ai-copy':
         await aiCopywritingFlow();
+        break;
+      case 'hook-story-offer':
+        await hookStoryOfferFlow();
         break;
       case 'preview':
         await previewFlow();
