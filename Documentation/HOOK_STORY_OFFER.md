@@ -30,8 +30,11 @@ A ridiculously compelling offer that uses:
 
 ### Prerequisites
 
-1. **OpenAI API Key Required**: This feature requires an OpenAI API key
-2. Configure your key: `pnpm configure` → Settings → Enter OpenAI API Key
+1. **LLM Provider Required**: This feature requires a configured LLM provider
+   - Option 1: Ollama (free, local) - Install from [ollama.com](https://ollama.com)
+   - Option 2: OpenAI (GPT-5 Turbo) - Get key from [platform.openai.com](https://platform.openai.com)
+   - Option 3: Claude (Sonnet 4) - Get key from [console.anthropic.com](https://console.anthropic.com)
+2. Configure your provider: `pnpm configure` → Settings → Select LLM Provider
 
 ### Generate Hook-Story-Offer Copy
 

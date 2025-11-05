@@ -37,7 +37,7 @@ Output:
 ❯ 🎨 Configure landing page
   🤖 AI-powered copywriting
   👁️  Preview site (live reload)
-  ⚙️  Settings (OpenAI API key)
+  ⚙️  Settings
   ❌ Exit
 ```
 
@@ -228,33 +228,49 @@ teams, productivity, streamline
 
 ## Example 3: Settings Configuration
 
-### Setting API Key
+### Setting Up LLM Provider
 
 ```
-? What would you like to do? ⚙️ Settings (OpenAI API key)
+? What would you like to do? ⚙️ Settings
 
 ⚙️  Settings
 
 ? What would you like to configure? (Use arrow keys)
-❯ ○ OpenAI API key (not set)
+❯ Select LLM Provider
+  ✓ OpenAI API Key (configured)
+  ○ Claude API Key (not set)
+  ✓ Ollama Configuration (active)
   ← Back
-
-? Enter your OpenAI API key: ********************************
-
-⠋ Verifying API key...
-✔ API key saved!
-
-? What would you like to do? (Back to main menu)
 ```
 
-### After API Key is Set
-
+**Example: Configuring OpenAI**
 ```
-⚙️  Settings
+? Select provider: OpenAI
 
 ? What would you like to configure?
-❯ ✓ OpenAI API key (configured)
-  ← Back
+❯ ○ OpenAI API Key (not set)
+
+? Enter your OpenAI API key: ********************************
+✔ API key saved!
+```
+
+**Example: Configuring Ollama**
+```
+? Select provider: Ollama
+
+⠋ Checking for available Ollama models...
+✔ Found 3 Ollama model(s)
+
+Available models:
+  • granite4:latest
+  • llama3.2
+  • mistral
+
+? Select or enter Ollama model:
+❯ granite4:latest
+  llama3.2
+  mistral
+  Enter custom model name
 ```
 
 ## Example 4: Live Preview
@@ -337,16 +353,17 @@ teams, productivity, streamline
 ✔
 ```
 
-### Missing API Key
+### Missing LLM Provider Configuration
 
 ```
 ? What would you like to do? 🤖 AI-powered copywriting
 
    ╭──────────────────────────────────────────────╮
    │                                              │
-   │ ⚠️  OpenAI API key not configured             │
+   │ ⚠️  openai is not configured                  │
    │                                              │
-   │ Please set your API key in Settings first    │
+   │ Please configure your LLM provider in         │
+   │ Settings first                               │
    │                                              │
    ╰──────────────────────────────────────────────╯
 
@@ -394,8 +411,8 @@ $ pnpm configure
 [Gradient ASCII Art Header]
 
 ? What would you like to do? ⚙️ Settings
-? Configure: OpenAI API key
-? Enter key: [enters key]
+? Select LLM Provider: OpenAI
+? OpenAI API Key: [enters key]
 ✔ API key saved!
 
 ? What would you like to do? 🎨 Configure landing page

@@ -234,21 +234,29 @@ pnpm configure
 
 ## 🤖 AI Copywriting Setup
 
-### Getting an OpenAI API Key
+The CLI supports three LLM providers. Choose one:
 
-1. Go to [platform.openai.com](https://platform.openai.com)
-2. Sign up or log in
-3. Navigate to API Keys section
-4. Create new secret key
-5. Copy the key
+### Option 1: Ollama (Free, Local)
 
-### Adding API Key via CLI
+1. Install from [ollama.com](https://ollama.com)
+2. Pull a model: `ollama pull granite4:latest`
+3. Run `pnpm configure` → Settings → Select LLM Provider → Ollama
+4. Choose model from your installed models
+5. Done! 100% free and private
 
-1. Run `pnpm configure`
-2. Select "⚙️ Settings"
-3. Select "OpenAI API key"
-4. Paste your key (input is masked)
-5. Done! Key saved to `.env.local`
+### Option 2: OpenAI (GPT-5 Turbo)
+
+1. Get API key from [platform.openai.com](https://platform.openai.com)
+2. Run `pnpm configure` → Settings → Select LLM Provider → OpenAI
+3. Enter your API key
+4. Done! Key saved to `.env.local`
+
+### Option 3: Claude (Sonnet 4)
+
+1. Get API key from [console.anthropic.com](https://console.anthropic.com)
+2. Run `pnpm configure` → Settings → Select LLM Provider → Claude
+3. Enter your API key
+4. Done! Key saved to `.env.local`
 
 ### Cost Expectations
 

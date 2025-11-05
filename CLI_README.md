@@ -51,7 +51,7 @@ One-click preview:
 **4. Settings** ⚙️
 ```
 Manage configuration:
-└── OpenAI API key (secure storage)
+└── LLM provider (OpenAI/Claude API keys or Ollama model)
 ```
 
 ## Visual Preview
@@ -81,7 +81,7 @@ When you run `pnpm configure`:
 ❯ 🎨 Configure landing page
   🤖 AI-powered copywriting
   👁️  Preview site (live reload)
-  ⚙️  Settings (OpenAI API key)
+  ⚙️  Settings
   ❌ Exit
 ```
 
@@ -254,13 +254,20 @@ pnpm dev
 
 ## AI Setup (Optional)
 
-For AI copywriting features:
+For AI copywriting features, configure one of three LLM providers:
 
-1. Get OpenAI API key from [platform.openai.com](https://platform.openai.com)
-2. Run `pnpm configure`
-3. Select "Settings"
-4. Enter API key
-5. Start using AI copywriting!
+**Option 1: Ollama (Free, Local)**
+1. Install from [ollama.com](https://ollama.com)
+2. Run: `ollama pull granite4:latest`
+3. Select in CLI Settings
+
+**Option 2: OpenAI (GPT-5)**
+1. Get API key from [platform.openai.com](https://platform.openai.com)
+2. Enter in CLI Settings
+
+**Option 3: Claude (Sonnet 4)**
+1. Get API key from [console.anthropic.com](https://console.anthropic.com)
+2. Enter in CLI Settings
 
 **Cost:** ~$0.0001-0.0002 per rewrite (very affordable)
 
@@ -326,16 +333,18 @@ Modify the CLI in `cli/`:
 
 - `index.ts` - Main interface and flows
 - `config-manager.ts` - YAML operations
-- `ai-assistant.ts` - OpenAI integration
+- `ai-assistant.ts` - Multi-LLM integration (OpenAI, Claude, Ollama)
+- `prompt-templates.ts` - Centralized prompt templates
 - `preview.ts` - Dev server launcher
 
 ## Error Handling
 
 Graceful error messages for:
 - Invalid hex colors → "Please enter valid hex color"
-- Missing API key → "OpenAI API key not configured"
+- Missing provider config → "[Provider] is not configured"
 - YAML errors → Specific parsing errors
 - Network issues → "Failed to generate suggestions"
+- Ollama not installed → Installation instructions provided
 
 ## Future Enhancements
 

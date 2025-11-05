@@ -62,7 +62,7 @@ async function mainMenu() {
           value: 'preview',
         },
         {
-          name: chalk.magenta('⚙️  Settings (OpenAI API key)'),
+          name: chalk.magenta('⚙️  Settings'),
           value: 'settings',
         },
         {

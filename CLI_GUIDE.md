@@ -23,7 +23,8 @@ A beautiful, interactive command-line interface for configuring your landing pag
 - Visual feedback for all actions
 
 ⚙️ **Settings Management**
-- Secure OpenAI API key storage
+- LLM provider configuration (OpenAI, Claude, or Ollama)
+- Secure API key storage for cloud providers
 - Environment variable management
 
 ## Installation
@@ -56,7 +57,7 @@ What would you like to do?
   🎨 Configure landing page
   🤖 AI-powered copywriting
   👁️  Preview site (live reload)
-  ⚙️  Settings (OpenAI API key)
+  ⚙️  Settings
   ❌ Exit
 ```
 
@@ -102,7 +103,7 @@ All changes are saved to `content/landing.yaml` automatically!
 
 ## 2. AI-Powered Copywriting
 
-Requires OpenAI API key (configure in Settings first).
+Requires an LLM provider configured (OpenAI, Claude, or Ollama) - configure in Settings first.
 
 ### How It Works
 
@@ -174,22 +175,28 @@ Any changes to `content/landing.yaml` will automatically reload the page!
 
 ## 4. Settings
 
-### OpenAI API Key
+### LLM Provider Configuration
 
-Store your OpenAI API key securely:
+The CLI supports three LLM providers for AI-powered features:
 
-1. Go to Settings
-2. Select "OpenAI API key"
-3. Enter your API key (masked input)
-4. Key is saved to `.env.local`
+**1. OpenAI (GPT-5 Turbo)**
+1. Go to Settings → "Select LLM Provider" → "OpenAI"
+2. Select "OpenAI API Key"
+3. Enter your API key (get from [platform.openai.com](https://platform.openai.com))
+4. Key is saved to `.env.local` as `OPENAI_API_KEY`
 
-**Getting an API Key:**
+**2. Claude (Sonnet 4)**
+1. Go to Settings → "Select LLM Provider" → "Claude"
+2. Select "Claude API Key"
+3. Enter your API key (get from [console.anthropic.com](https://console.anthropic.com))
+4. Key is saved to `.env.local` as `ANTHROPIC_API_KEY`
 
-1. Go to [platform.openai.com](https://platform.openai.com)
-2. Sign up or log in
-3. Navigate to API Keys
-4. Create new secret key
-5. Copy and paste into CLI
+**3. Ollama (Local, Free)**
+1. Install Ollama from [ollama.com](https://ollama.com)
+2. Pull a model: `ollama pull granite4:latest`
+3. Go to Settings → "Select LLM Provider" → "Ollama Configuration"
+4. Select from available local models or enter custom model name
+5. Model preference is saved to `.env.local` as `OLLAMA_MODEL`
 
 **Cost:** GPT-4o-mini is very affordable (~$0.15 per 1M tokens)
 

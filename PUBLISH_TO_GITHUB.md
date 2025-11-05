@@ -193,7 +193,7 @@ First public release of the Landing Page Template!
 ### ✨ Features
 
 - 🎨 Interactive CLI configurator
-- 🤖 AI-powered copywriting (OpenAI integration)
+- 🤖 AI-powered copywriting (OpenAI, Claude, or Ollama)
 - 📝 YAML-driven content configuration
 - 🌓 Dark mode support
 - 📱 Fully responsive design

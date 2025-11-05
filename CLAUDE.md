@@ -76,12 +76,13 @@ The project has **two separate TypeScript configurations**:
 ### CLI Structure
 - **Entry**: `cli/index.ts` (main menu loop)
 - **Config Manager**: `cli/config-manager.ts` (YAML read/write)
-- **AI Assistant**: `cli/ai-assistant.ts` (OpenAI integration)
+- **AI Assistant**: `cli/ai-assistant.ts` (Multi-LLM integration: OpenAI, Claude, Ollama)
+- **Prompt Templates**: `cli/prompt-templates.ts` (Centralized prompts for all providers)
 - **Preview**: `cli/preview.ts` (dev server launcher)
 
 Key CLI patterns:
 - Uses `inquirer` for prompts
-- Stores OpenAI API key in `.cli-settings.json`
+- Stores LLM provider configs in `.env.local` (API keys, Ollama model)
 - Modifies `content/landing.yaml` directly
 - Can launch `next dev` from within CLI
 

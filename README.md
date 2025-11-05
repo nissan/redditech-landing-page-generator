@@ -223,7 +223,8 @@ Vercel is the recommended platform for deploying your landing page (it's made by
 
 3. **Add Environment Variables** (if needed):
    - In Vercel dashboard → Settings → Environment Variables
-   - Add your `OPENAI_API_KEY`, email service credentials, etc.
+   - Add your LLM provider credentials (`OPENAI_API_KEY`, `ANTHROPIC_API_KEY`, or `OLLAMA_MODEL`)
+   - Add email service credentials if using forms
 
 4. **Deploy**:
    - Click "Deploy"
@@ -255,8 +256,11 @@ vercel
 Add these in Vercel dashboard (if applicable):
 
 ```bash
-# Optional - for AI copywriting
+# Optional - for AI copywriting (choose one or more)
 OPENAI_API_KEY=sk-...
+ANTHROPIC_API_KEY=sk-ant-...
+OLLAMA_MODEL=granite4:latest
+LLM_PROVIDER=openai  # or 'claude' or 'ollama'
 
 # Optional - Email service
 MAILCHIMP_API_KEY=...
