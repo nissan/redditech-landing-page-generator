@@ -32,12 +32,12 @@
   "license": "Apache-2.0",
   "repository": {
     "type": "git",
-    "url": "https://github.com/yourusername/redditech-landing-page-generator.git"
+    "url": "https://github.com/nissan/redditech-landing-page-generator.git"
   },
   "bugs": {
-    "url": "https://github.com/yourusername/redditech-landing-page-generator/issues"
+    "url": "https://github.com/nissan/redditech-landing-page-generator/issues"
   },
-  "homepage": "https://github.com/yourusername/redditech-landing-page-generator#readme",
+  "homepage": "https://github.com/nissan/redditech-landing-page-generator#readme",
   "packageManager": "pnpm@10.18.3",
   "dependencies": {
     "@types/node": "^24.10.0",

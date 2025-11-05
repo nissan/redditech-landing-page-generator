@@ -27,7 +27,7 @@ Run the included demo to see what's possible:
 
 ```bash
 # Clone and install
-git clone https://github.com/yourusername/redditech-landing-page-generator.git
+git clone https://github.com/nissan/redditech-landing-page-generator.git
 cd redditech-landing-page-generator
 pnpm install
 
@@ -50,7 +50,7 @@ For more demo options, check out the [`demo/`](demo/) folder.
 
 ```bash
 # 1. Clone the repository
-git clone https://github.com/yourusername/redditech-landing-page-generator.git
+git clone https://github.com/nissan/redditech-landing-page-generator.git
 cd redditech-landing-page-generator
 
 # 2. Install dependencies
@@ -329,8 +329,8 @@ This project is licensed under the Apache License 2.0 - see the [LICENSE](LICENS
 
 ## 💬 Support
 
-- **Issues**: [GitHub Issues](https://github.com/yourusername/redditech-landing-page-generator/issues)
-- **Discussions**: [GitHub Discussions](https://github.com/yourusername/redditech-landing-page-generator/discussions)
+- **Issues**: [GitHub Issues](https://github.com/nissan/redditech-landing-page-generator/issues)
+- **Discussions**: [GitHub Discussions](https://github.com/nissan/redditech-landing-page-generator/discussions)
 - **Documentation**: [Full Docs](Documentation/)
 
 ## 🌟 Show Your Support
