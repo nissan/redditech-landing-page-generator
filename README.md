@@ -72,10 +72,10 @@ That's it! Your landing page is now running at [http://localhost:3000](http://lo
 The heart of this project is the beautiful CLI that makes configuration effortless:
 
 - **Visual Wizard**: Step-by-step prompts guide you through every option
-- **AI Copywriting**: Get help writing headlines, descriptions, and CTAs
+- **AI Copywriting**: Get help writing headlines, descriptions, and CTAs with GPT-5, Claude Sonnet 4, or local Ollama
 - **Live Preview**: Launch a dev server directly from the CLI
 - **Color Validation**: Hex color picker with real-time validation
-- **Settings Management**: Store your OpenAI API key securely
+- **Settings Management**: Store your LLM provider API keys securely
 - **YAML Export**: All changes saved to `content/landing.yaml`
 
 ```bash
@@ -146,11 +146,30 @@ hero:
 
 ### AI Copywriting Setup (Optional)
 
-To use the AI copywriting feature:
+The CLI supports **three LLM providers** for AI-powered features:
 
-1. Get an API key from [OpenAI Platform](https://platform.openai.com/)
-2. Run `pnpm configure` → Select "Settings" → Enter your API key
-3. Use the AI assistant when writing copy (costs ~$0.0001-0.0002 per rewrite)
+**1. Ollama (FREE, Local)**
+- Install from [ollama.com](https://ollama.com)
+- Run: `ollama pull granite4:latest`
+- Configure in Settings (CLI auto-detects local models)
+- 100% free, runs on your machine
+
+**2. Claude Sonnet 4 (Cloud, Premium)**
+- Get API key from [Anthropic Console](https://console.anthropic.com/)
+- Latest Claude Sonnet 4 model
+- Exceptional quality and reasoning
+
+**3. OpenAI GPT-5 (Cloud, Premium)**
+- Get API key from [OpenAI Platform](https://platform.openai.com/)
+- Latest GPT-5 Turbo model
+- State-of-the-art performance
+
+**Setup:**
+```bash
+pnpm configure → Settings → Select LLM Provider
+```
+
+See [Multi-LLM Guide](Documentation/MULTI_LLM_GUIDE.md) for detailed setup.
 
 ## 🏗️ Project Structure
 
@@ -178,7 +197,7 @@ For detailed architecture, see [PROJECT_STRUCTURE.md](Documentation/PROJECT_STRU
 | **Animations** | Framer Motion 12.23.24 |
 | **Language** | TypeScript 5.9.3 |
 | **CLI Tools** | Inquirer, Chalk, Figlet, Boxen |
-| **AI Integration** | OpenAI API 6.8.1 |
+| **AI Integration** | OpenAI GPT-5, Claude Sonnet 4, Ollama |
 | **Theme** | next-themes 0.4.6 |
 | **Icons** | Lucide React 0.552.0 |
 | **Package Manager** | pnpm 10.18.3 |
