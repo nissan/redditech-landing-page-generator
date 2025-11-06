@@ -1,0 +1,484 @@
+import OpenAI from 'openai';
+import Anthropic from '@anthropic-ai/sdk';
+import { Ollama } from 'ollama';
+import fs from 'fs';
+import path from 'path';
+import dotenv from 'dotenv';
+import { getCopywritingPrompt, getHookStoryOfferPrompt, getIdeaGenerationPrompt, } from './prompt-templates.js';
+dotenv.config();
+export class AIAssistant {
+    constructor() {
+        this.openai = null;
+        this.claude = null;
+        this.ollama = null;
+        this.envPath = path.join(process.cwd(), '.env.local');
+        this.config = this.loadConfig();
+        this.initializeClients();
+    }
+    loadConfig() {
+        const defaultConfig = {
+            provider: 'openai',
+            ollamaModel: 'granite4:latest',
+            ollamaBaseUrl: 'http://localhost:11434',
+        };
+        try {
+            if (fs.existsSync(this.envPath)) {
+                const envConfig = dotenv.parse(fs.readFileSync(this.envPath));
+                return {
+                    provider: envConfig.LLM_PROVIDER || defaultConfig.provider,
+                    openaiApiKey: envConfig.OPENAI_API_KEY,
+                    claudeApiKey: envConfig.ANTHROPIC_API_KEY,
+                    ollamaModel: envConfig.OLLAMA_MODEL || defaultConfig.ollamaModel,
+                    ollamaBaseUrl: envConfig.OLLAMA_BASE_URL || defaultConfig.ollamaBaseUrl,
+                };
+            }
+        }
+        catch (error) {
+            // Silently fail if .env.local doesn't exist
+        }
+        return defaultConfig;
+    }
+    initializeClients() {
+        // Initialize OpenAI
+        if (this.config.openaiApiKey) {
+            this.openai = new OpenAI({
+                apiKey: this.config.openaiApiKey,
+            });
+        }
+        // Initialize Claude
+        if (this.config.claudeApiKey) {
+            this.claude = new Anthropic({
+                apiKey: this.config.claudeApiKey,
+            });
+        }
+        // Initialize Ollama (always available if running locally)
+        try {
+            this.ollama = new Ollama({
+                host: this.config.ollamaBaseUrl,
+            });
+        }
+        catch (error) {
+            // Ollama not available
+        }
+    }
+    isConfigured() {
+        switch (this.config.provider) {
+            case 'openai':
+                return this.openai !== null;
+            case 'claude':
+                return this.claude !== null;
+            case 'ollama':
+                return this.ollama !== null;
+            default:
+                return false;
+        }
+    }
+    getCurrentProvider() {
+        return this.config.provider;
+    }
+    getProviderStatus() {
+        return [
+            { provider: 'openai', configured: this.openai !== null },
+            { provider: 'claude', configured: this.claude !== null },
+            { provider: 'ollama', configured: this.ollama !== null },
+        ];
+    }
+    getApiKey(provider) {
+        if (!fs.existsSync(this.envPath)) {
+            return null;
+        }
+        try {
+            const envConfig = dotenv.parse(fs.readFileSync(this.envPath));
+            let key;
+            switch (provider) {
+                case 'openai':
+                    key = envConfig.OPENAI_API_KEY;
+                    break;
+                case 'claude':
+                    key = envConfig.ANTHROPIC_API_KEY;
+                    break;
+                case 'ollama':
+                    return this.config.ollamaModel || 'granite4:latest';
+            }
+            return key ? `${key.substring(0, 8)}...${key.substring(key.length - 4)}` : null;
+        }
+        catch {
+            return null;
+        }
+    }
+    setProvider(provider) {
+        this.updateEnv('LLM_PROVIDER', provider);
+        this.config.provider = provider;
+    }
+    setApiKey(provider, apiKey) {
+        switch (provider) {
+            case 'openai':
+                this.updateEnv('OPENAI_API_KEY', apiKey);
+                this.openai = new OpenAI({ apiKey });
+                break;
+            case 'claude':
+                this.updateEnv('ANTHROPIC_API_KEY', apiKey);
+                this.claude = new Anthropic({ apiKey });
+                break;
+            case 'ollama':
+                // For Ollama, apiKey is actually the model name
+                this.updateEnv('OLLAMA_MODEL', apiKey);
+                this.config.ollamaModel = apiKey;
+                break;
+        }
+    }
+    setOllamaConfig(model, baseUrl) {
+        this.updateEnv('OLLAMA_MODEL', model);
+        if (baseUrl) {
+            this.updateEnv('OLLAMA_BASE_URL', baseUrl);
+        }
+        this.config.ollamaModel = model;
+        this.config.ollamaBaseUrl = baseUrl || this.config.ollamaBaseUrl;
+        this.ollama = new Ollama({ host: this.config.ollamaBaseUrl });
+    }
+    async getOllamaModels() {
+        try {
+            if (!this.ollama) {
+                this.ollama = new Ollama({ host: this.config.ollamaBaseUrl });
+            }
+            const response = await this.ollama.list();
+            return response.models.map((model) => model.name);
+        }
+        catch (error) {
+            // Ollama not running or not installed
+            return [];
+        }
+    }
+    async isOllamaInstalled() {
+        try {
+            // Try to connect to Ollama
+            if (!this.ollama) {
+                this.ollama = new Ollama({ host: this.config.ollamaBaseUrl });
+            }
+            // Attempt to list models - if this succeeds, Ollama is installed and running
+            await this.ollama.list();
+            return true;
+        }
+        catch (error) {
+            // Check if it's a connection error (Ollama not running/installed)
+            // vs other errors
+            if (error.cause?.code === 'ECONNREFUSED' || error.message?.includes('ECONNREFUSED')) {
+                return false;
+            }
+            // If we get here, Ollama might be installed but having other issues
+            return false;
+        }
+    }
+    async isOllamaAvailable() {
+        try {
+            const models = await this.getOllamaModels();
+            return models.length > 0;
+        }
+        catch {
+            return false;
+        }
+    }
+    updateEnv(key, value) {
+        let envContent = '';
+        if (fs.existsSync(this.envPath)) {
+            envContent = fs.readFileSync(this.envPath, 'utf8');
+        }
+        const lines = envContent.split('\n');
+        let found = false;
+        const updatedLines = lines.map((line) => {
+            if (line.startsWith(`${key}=`)) {
+                found = true;
+                return `${key}=${value}`;
+            }
+            return line;
+        });
+        if (!found) {
+            updatedLines.push(`${key}=${value}`);
+        }
+        fs.writeFileSync(this.envPath, updatedLines.join('\n'), 'utf8');
+    }
+    async callLLM(prompt, systemPrompt) {
+        switch (this.config.provider) {
+            case 'openai':
+                return this.callOpenAI(prompt, systemPrompt);
+            case 'claude':
+                return this.callClaude(prompt, systemPrompt);
+            case 'ollama':
+                return this.callOllama(prompt, systemPrompt);
+            default:
+                throw new Error(`Unsupported LLM provider: ${this.config.provider}`);
+        }
+    }
+    async callOpenAI(prompt, systemPrompt) {
+        if (!this.openai) {
+            throw new Error('OpenAI API key not configured');
+        }
+        const messages = [];
+        if (systemPrompt) {
+            messages.push({ role: 'system', content: systemPrompt });
+        }
+        messages.push({ role: 'user', content: prompt });
+        const completion = await this.openai.chat.completions.create({
+            model: 'gpt-5-turbo',
+            messages,
+            temperature: 0.8,
+            max_tokens: 2000,
+        });
+        return completion.choices[0]?.message?.content || '';
+    }
+    async callClaude(prompt, systemPrompt) {
+        if (!this.claude) {
+            throw new Error('Claude API key not configured');
+        }
+        const response = await this.claude.messages.create({
+            model: 'claude-sonnet-4-20250514',
+            max_tokens: 2000,
+            temperature: 0.8,
+            system: systemPrompt || 'You are a helpful assistant.',
+            messages: [
+                {
+                    role: 'user',
+                    content: prompt,
+                },
+            ],
+        });
+        const content = response.content[0];
+        if (content.type === 'text') {
+            return content.text;
+        }
+        throw new Error('Unexpected response format from Claude');
+    }
+    async callOllama(prompt, systemPrompt) {
+        if (!this.ollama) {
+            throw new Error('Ollama not available. Make sure Ollama is running locally.');
+        }
+        const fullPrompt = systemPrompt
+            ? `${systemPrompt}\n\n${prompt}`
+            : prompt;
+        const response = await this.ollama.generate({
+            model: this.config.ollamaModel || 'granite4:latest',
+            prompt: fullPrompt,
+            stream: false,
+        });
+        return response.response;
+    }
+    async rewriteCopy(originalCopy, options) {
+        if (!this.isConfigured()) {
+            throw new Error(`${this.config.provider} not configured`);
+        }
+        const { section, tone, keywords } = options;
+        const sectionDescriptions = {
+            headline: 'main headline that captures attention and communicates value',
+            subheadline: 'supporting subheadline that expands on the value proposition',
+            'cta-heading': 'call-to-action heading that motivates users to take action',
+            'cta-description': 'call-to-action description that provides context',
+        };
+        // Use centralized prompt template
+        const promptTemplate = getCopywritingPrompt({
+            originalCopy,
+            section,
+            tone,
+            keywords,
+            sectionDescription: sectionDescriptions[section],
+        });
+        try {
+            const content = await this.callLLM(promptTemplate.userPrompt, promptTemplate.systemPrompt);
+            // Try to parse as JSON
+            try {
+                const parsed = JSON.parse(content);
+                if (Array.isArray(parsed)) {
+                    return parsed;
+                }
+            }
+            catch {
+                // If not valid JSON, try to extract from markdown code blocks
+                const jsonMatch = content.match(/```(?:json)?\s*(\[[\s\S]*?\])\s*```/);
+                if (jsonMatch) {
+                    const parsed = JSON.parse(jsonMatch[1]);
+                    if (Array.isArray(parsed)) {
+                        return parsed;
+                    }
+                }
+                // Fallback: split by newlines and filter
+                return content
+                    .split('\n')
+                    .filter((line) => line.trim().length > 0)
+                    .slice(0, 3);
+            }
+            return [content];
+        }
+        catch (error) {
+            console.error(`${this.config.provider} API Error:`, error);
+            throw error;
+        }
+    }
+    async generateIdeas(type) {
+        if (!this.isConfigured()) {
+            throw new Error(`${this.config.provider} not configured`);
+        }
+        // Use centralized prompt template
+        const promptTemplate = getIdeaGenerationPrompt(type);
+        try {
+            const content = await this.callLLM(promptTemplate.userPrompt, promptTemplate.systemPrompt);
+            return content.split('\n').filter((line) => line.trim().length > 0);
+        }
+        catch (error) {
+            console.error(`${this.config.provider} API Error:`, error);
+            throw error;
+        }
+    }
+    async generateHookStoryOffer(options) {
+        if (!this.isConfigured()) {
+            throw new Error(`${this.config.provider} not configured`);
+        }
+        const tone = options.tone || 'Professional';
+        // Use centralized prompt template
+        const promptTemplate = getHookStoryOfferPrompt({
+            context: options.context,
+            backstory: options.backstory,
+            offer: options.offer,
+            tone,
+        });
+        try {
+            const content = await this.callLLM(promptTemplate.userPrompt, promptTemplate.systemPrompt);
+            // Try to parse JSON directly
+            try {
+                const parsed = JSON.parse(content);
+                return {
+                    hook: parsed.hook || '',
+                    story: parsed.story || '',
+                    offerHeading: parsed.offerHeading || '',
+                    features: parsed.features || [],
+                    guarantee: parsed.guarantee || '',
+                };
+            }
+            catch {
+                // Try to extract JSON from markdown code blocks
+                const jsonMatch = content.match(/```(?:json)?\s*(\{[\s\S]*?\})\s*```/);
+                if (jsonMatch) {
+                    const parsed = JSON.parse(jsonMatch[1]);
+                    return {
+                        hook: parsed.hook || '',
+                        story: parsed.story || '',
+                        offerHeading: parsed.offerHeading || '',
+                        features: parsed.features || [],
+                        guarantee: parsed.guarantee || '',
+                    };
+                }
+                throw new Error('Could not parse JSON response from LLM');
+            }
+        }
+        catch (error) {
+            console.error(`${this.config.provider} API Error:`, error);
+            throw error;
+        }
+    }
+    async generateConversionHeadline(audience, painPoint, solution, formula) {
+        const prompt = `Generate 3 compelling headline variations for a landing page using the ${formula} formula.
+
+Target Audience: ${audience}
+Pain Point: ${painPoint}
+Solution/Result: ${solution}
+
+Requirements:
+- Each headline should be powerful and conversion-focused
+- Use action words and specific numbers where appropriate
+- Address the pain point directly
+- Promise a clear outcome
+- Keep each headline under 15 words
+- Make them unique from each other
+
+Return ONLY a JSON array of 3 headline strings, nothing else.
+Example: ["Headline 1", "Headline 2", "Headline 3"]`;
+        const response = await this.callLLM(prompt, 'You are an expert conversion copywriter specializing in high-converting headlines.');
+        try {
+            const cleaned = response.trim().replace(/```json\n?|\n?```/g, '');
+            const headlines = JSON.parse(cleaned);
+            return Array.isArray(headlines) ? headlines : [];
+        }
+        catch (error) {
+            // Fallback: split by newlines
+            return response.split('\n').filter((line) => line.trim().length > 0).slice(0, 3);
+        }
+    }
+    async generateHowItWorksSteps(productDescription) {
+        const prompt = `Generate a clear 3-step "How It Works" process for this product/service:
+
+${productDescription}
+
+Requirements:
+- Exactly 3 steps
+- Each step should be action-oriented (start with a verb)
+- Include a brief description (1-2 sentences max)
+- Optionally include a quick timeframe (e.g., "2 minutes", "instantly")
+- Focus on simplicity and clarity
+
+Return ONLY a JSON array of 3 step objects with this format:
+[
+  {
+    "number": 1,
+    "title": "Step title",
+    "description": "Brief description",
+    "icon": "number-1",
+    "timeframe": "2 minutes"
+  },
+  ...
+]`;
+        const response = await this.callLLM(prompt, 'You are an expert at simplifying complex processes into clear, actionable steps.');
+        try {
+            const cleaned = response.trim().replace(/```json\n?|\n?```/g, '');
+            const steps = JSON.parse(cleaned);
+            return Array.isArray(steps) ? steps : [];
+        }
+        catch (error) {
+            return [];
+        }
+    }
+    async generateFAQ(productDescription, targetAudience) {
+        const prompt = `Generate 5-7 frequently asked questions and answers for this product/service:
+
+Product/Service: ${productDescription}
+Target Audience: ${targetAudience}
+
+Requirements:
+- Address common objections (price, implementation, support, etc.)
+- Include "How is this different from..." questions
+- Address guarantee/refund concerns
+- Keep answers clear, concise, and reassuring
+- Focus on removing purchase anxiety
+
+Return ONLY a JSON array of FAQ objects with this format:
+[
+  {
+    "question": "The question",
+    "answer": "The answer (can include simple HTML like <strong> or <em>)"
+  },
+  ...
+]`;
+        const response = await this.callLLM(prompt, 'You are an expert at addressing customer objections and writing FAQ content that builds trust.');
+        try {
+            const cleaned = response.trim().replace(/```json\n?|\n?```/g, '');
+            const faqs = JSON.parse(cleaned);
+            return Array.isArray(faqs) ? faqs : [];
+        }
+        catch (error) {
+            return [];
+        }
+    }
+    async generateGuaranteeCopy(guaranteeType) {
+        const prompt = `Write compelling money-back guarantee copy for a ${guaranteeType} money-back guarantee.
+
+Requirements:
+- Emphasize "no questions asked" or "hassle-free"
+- Build confidence and remove risk
+- Keep it clear and simple (2-3 sentences)
+- Make it reassuring and trustworthy
+- Don't be overly salesy
+
+Return ONLY the guarantee description text, nothing else.`;
+        const response = await this.callLLM(prompt, 'You are an expert at writing risk-reversal copy that builds customer confidence.');
+        return response.trim();
+    }
+}
+//# sourceMappingURL=ai-assistant.js.map
+//# sourceMappingURL=ai-assistant.js.map

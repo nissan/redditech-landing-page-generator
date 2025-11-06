@@ -1,0 +1,12 @@
+{
+  "name": "landing-page-cli",
+  "version": "1.0.0",
+  "type": "module",
+  "bin": {
+    "configure": "./dist/index.js"
+  },
+  "scripts": {
+    "build": "tsc",
+    "start": "node dist/index.js"
+  }
+}

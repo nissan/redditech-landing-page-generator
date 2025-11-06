@@ -1,0 +1,35 @@
+{
+  "name": "@lpg/cli",
+  "version": "1.0.0",
+  "description": "CLI for Landing Page Generator",
+  "type": "module",
+  "main": "./dist/index.js",
+  "bin": {
+    "lpg": "./dist/index.js"
+  },
+  "scripts": {
+    "build": "tsc --project tsconfig.json",
+    "dev": "tsx src/index.ts",
+    "type-check": "tsc --noEmit"
+  },
+  "dependencies": {
+    "@lpg/ui": "workspace:*",
+    "inquirer": "^12.2.0",
+    "chalk": "^5.4.1",
+    "nanospinner": "^1.1.0",
+    "figlet": "^1.8.0",
+    "gradient-string": "^3.0.0",
+    "boxen": "^8.0.1",
+    "js-yaml": "^4.1.0",
+    "dotenv": "^16.5.0",
+    "ora": "^8.1.1"
+  },
+  "devDependencies": {
+    "@types/node": "^22.10.1",
+    "@types/inquirer": "^9.0.7",
+    "@types/figlet": "^1.7.0",
+    "@types/js-yaml": "^4.0.9",
+    "typescript": "^5.9.3",
+    "tsx": "^4.19.2"
+  }
+}

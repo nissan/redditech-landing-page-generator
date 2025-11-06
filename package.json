@@ -3,13 +3,10 @@
   "version": "1.0.0",
   "description": "Modern landing page generator with AI-powered copywriting, interactive CLI, and production-ready Next.js 16 + React 19 stack",
   "scripts": {
-    "dev": "next dev",
-    "build": "next build",
-    "start": "next start",
-    "lint": "next lint",
-    "type-check": "tsc --noEmit",
-    "configure": "tsx cli/index.ts",
-    "cli:build": "tsc --project cli/tsconfig.json"
+    "dev": "node scripts/dev.js",
+    "build:all": "pnpm --filter @lpg/ui build && pnpm --filter @lpg/cli build",
+    "type-check": "pnpm --recursive run type-check",
+    "lpg": "tsx packages/cli/src/index.ts"
   },
   "keywords": [
     "nextjs",
