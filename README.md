@@ -8,6 +8,29 @@
 
 **The modern landing page generator with AI-powered copywriting built right in.** Create beautiful, production-ready landing pages in minutes, not hours.
 
+> **🎉 NEW in v2.0**: Multi-project architecture! Manage unlimited landing page projects in one workspace. [See Migration Guide →](MIGRATION.md)
+
+## 📦 Multi-Project Architecture
+
+LPG now supports **multiple projects** in a single workspace:
+
+- **Unlimited Projects**: Create as many landing pages as you need
+- **Shared Component Library**: All projects use @lpg/ui components
+- **Project-Scoped Configs**: Each project has its own `landing.yaml`
+- **Smart CLI**: Auto-selects single projects, interactive menu for multiple
+- **Flexible Dev Workflow**: `pnpm dev` (interactive) or `pnpm dev [name]` (direct)
+
+```
+landing-page-generator/
+├── packages/
+│   ├── ui/        # @lpg/ui - Shared components & utilities
+│   └── cli/       # @lpg/cli - Interactive CLI with project management
+└── projects/
+    ├── demo/      # Example project (included)
+    ├── client-a/  # Your projects...
+    └── client-b/
+```
+
 ## ✨ Why LPG?
 
 - **🤖 AI-Powered CLI**: Built-in multi-LLM copywriting (OpenAI GPT-5, Claude Sonnet 4, or FREE local Ollama)
@@ -57,14 +80,34 @@ cd redditech-landing-page-generator
 # 2. Install dependencies
 pnpm install
 
-# 3. Start the interactive configurator
-pnpm configure
+# 3. Start the interactive CLI (with project selection)
+pnpm lpg
 
-# 4. Launch preview
+# 4. Launch dev server
 pnpm dev
+# Or launch specific project:
+# pnpm dev demo
 ```
 
 That's it! Your landing page is now running at [http://localhost:3000](http://localhost:3000).
+
+### Creating a New Project
+
+```bash
+# Run the CLI
+pnpm lpg
+
+# When prompted, select "Create new project"
+# or choose from the menu: "Switch Project" → "Create new project"
+```
+
+The CLI will:
+1. Ask for a project name (lowercase, hyphens only)
+2. Create the project structure at `projects/[name]/`
+3. Install dependencies automatically
+4. You're ready to configure!
+
+Now all wizards (configure, AI copywriting, conversion optimizer) work within your selected project.
 
 ## 🎯 Features
 
